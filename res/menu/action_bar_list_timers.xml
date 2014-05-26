@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_add_timer"
+        android:icon="@drawable/add"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/menu_new_timer"/>
+    
+    <item
+        android:id="@+id/menu_run_category"
+        android:icon="@android:drawable/ic_menu_slideshow"
+        android:showAsAction="withText"
+        android:title="@string/categories_action_run_in_queue"/>
+
+</menu>

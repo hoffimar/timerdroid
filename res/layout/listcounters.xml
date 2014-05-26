@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="fill_horizontal" >
+    
+    <TextView
+        android:id="@+id/listcounters_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:layout_weight="1.0"
+        android:padding="5sp"
+        android:singleLine="false"
+        android:text=""
+        android:textColor="#fff"
+        android:textSize="20sp" >
+    </TextView>
+
+    <ImageButton
+        android:id="@+id/timer_dropdown_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="#000000"
+        android:src="@drawable/dropdown_button" >
+    </ImageButton>
+
+    <TextView
+        android:id="@+id/listcounters_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:gravity="right"
+        android:textColor="#fff"
+        android:padding="5sp"
+        android:text=""
+        android:textSize="20sp" >
+    </TextView>
+
+    <ImageButton
+        android:id="@+id/counter_start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:background="#000000"
+        android:src="@drawable/play"
+        android:tint="#a8c24e" >
+    </ImageButton>
+    <!-- android:src="@android:drawable/ic_media_play" -->
+
+</LinearLayout>

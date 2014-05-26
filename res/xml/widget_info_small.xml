@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.tomatodev.timerdroid.widget.AppWidgetConfigure"
+    android:initialLayout="@layout/widget_small"
+    android:minHeight="40dp"
+    android:minWidth="40dp"
+    android:updatePeriodMillis="86400000" /><!-- android:minWidth="40dp" -->

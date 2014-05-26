@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">TimerDroid</string>
+	<string name="main_preferences">Einstellungen</string>
+    <string name="main_deletedialog_title_1">Willst du den Timer</string>
+    <string name="main_deletedialog_title_2">wirklich stoppen?</string>
+    <string name="main_deletedialog_yes">Ja</string>
+    <string name="main_deletedialog_no">Nein</string>
+    
+    <!-- Main Menu -->
+	<string name="menu_about">Info</string>
+	<string name="menu_new_timer">Neuer Timer</string>
+	<string name="menu_new_category">Neue Kategorie</string>
+	<string name="about_author_label">Autor</string>
+	<string name="about_author">Martin Hoffmann</string>
+	<string name="about_version_label">Version</string>
+	<string name="about_version">2.1.0</string>
+	<string name="about_url_label">Webseite</string>
+	<string name="about_url">\s"https://plus.google.com/106539403614439122831" </string>
+	<string name="menu_about_button_text">OK</string>
+	<string name="menu_feedback">Feedback</string>
+	<string name="feedback_chooser_title">Wähle App</string>
+	<string name="menu_feedback_subject">Feedback Timerdroid</string>
+	<string name="menu_feedback_address">tomatodevs@googlemail.com</string>
+	<string name="menu_share">Weiterleiten</string>
+	<string name="menu_share_url">https://market.android.com/details?id=com.tomatodev.timerdroid</string>
+	<string name="menu_share_subject">Android Timer App</string>
+	<string name="menu_delete_all">Alle Timer löschen</string>
+	<string name="menu_delete_dialog_title">Wirklich alle Kategorien und Timer löschen?</string>
+	
+	<!-- CreateTimer/Update Timer -->
+	<string name="cr_timer_title">Neuen Timer anlegen</string>
+	<string name="up_timer_title">Timer editieren</string>
+	<string name="cr_timer_choose_category_prompt">Kategorieauswahl</string>
+	<string name="cr_timer_hours">Stunden</string>
+	<string name="cr_timer_minutes">Minuten</string>
+	<string name="cr_timer_seconds">Sekunden</string>
+	<string name="cr_timer_nameLabel">Name</string>
+	<string name="cr_timer_save">Speichern</string>
+	<string name="cr_timer_custom">Timer</string>
+	<string name="cr_timer_category">Kategorie</string>
+	<string name="cr_timer_favorite">Favorit</string>
+	<string name="create_timer_timer_saved">Timer gespeichert</string>
+	<string name="create_timer_no_time_set">Bitte Zeit eingeben</string>
+	<string name="create_timer_no_name_set">Bitte Namen eingeben</string>
+	<string name="create_timer_save">Speichern</string>	
+	<string name="create_timer_start">Start</string>
+         
+    <string name="prefs_activity_title">Einstellungen</string>
+	<string name="prefs_title_alarms">Alarme</string>
+	<string name="prefs_title">Einstellungen</string>
+	<string name="prefs_ringtone_title">Alarmton</string>
+	<string name="prefs_ringtone_summary">Wähle den Alarmton</string>
+	<string name="prefs_volume_title">Alarm Lautstärke</string>
+	<string name="prefs_volume_dialog">Lautstärke des Alarms</string>
+	<string name="prefs_vibration_title">Vibration</string>
+	<string name="prefs_vibration_summary">Vibration einschalten</string>
+	<string name="prefs_insistent_alarm_title">Alarm wiederholen</string>
+	<string name="prefs_insistent_alarm_summary">Alarm wiederholen bis manuell gestoppt?</string>
+	<string name="prefs_title_screen">Bildschirm</string>
+	<string name="prefs_screen_unlocked_title">Bildschirm nicht sperren</string>
+	<string name="prefs_screen_unlocked_summary">Bildschirm nicht sperren wenn Timer läuft</string>
+	
+	<string name="categories_add">Hinzufügen</string>
+	<string name="categories_action_edit">Ändern</string>
+	<string name="categories_action_delete">Löschen</string>
+	<string name="categories_action_run_in_queue">Alle nacheinander laufen lassen</string>
+	<string name="categories_title">Kategorien</string>
+	<string name="categories_add_category">Kategorie hinzufügen</string>
+	<string name="categories_rename_category">Kategorie ändern</string>
+	<string name="categories_choose_image">Bild auswählen</string>
+	<string name="categories_deletedialog_title_1">Diese Kategorie und alle Timer darin</string>
+    <string name="categories_deletedialog_title_2">wirklich löschen?</string>
+    <string name="categories_toast_help">Lange drücken zum ändern oder löschen</string>
+	
+	<string name="list_timers_title">Timer</string>
+	<string name="list_timers_title_favorites">Favoriten</string>
+	<string name="list_timers_action_edit">Ändern</string>
+	<string name="list_timers_action_delete">Löschen</string>
+	<string name="list_timers_action_run">Starten</string>
+	<string name="list_timers_action_run_repeated">Starten (Wdh.)</string>
+	<string name="list_timers_choose_action">Auswahl</string>
+	<string name="list_timers_repeat_title">Wie oft starten?</string>
+	<string name="list_timers_start">Start</string>
+	<string name="list_timers_cancel">Abbrechen</string>
+	<string name="list_timers_toast_help">Press a timer to start it, press longer to edit or delete</string>
+	<string name="list_timers_delete_title">Delete timer?</string>
+	
+	<string name="service_running_timers">Aktuell</string>
+	<string name="service_no_running_timers">Keine laufenden Timer</string>
+	<string name="service_timer_label">Timer</string>
+	<string name="service_running_label">läuft</string>
+	<string name="service_started_label">gestartet</string>
+	<string name="service_stopped_label">gestoppt</string>
+	<string name="service_finished_label">beendet</string>
+	<string name="service_toast_timer_finished">Timer beendet</string>
+	
+	<string name="widget_loading">Lädt</string>
+	
+	<string name="widget_choose_timer">Wähle einen Timer</string>	
+		
+	<string name="running_timers">Laufende Timer</string>	
+	<string name="no_timers_running">Es laufen keine Timer</string>
+	<string name="no_timers_in_this_category">Keine Timer in dieser Kategorie</string>
+	
+	<string name="popup_timer_stop">Stop</string>
+</resources>

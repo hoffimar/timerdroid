@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/popup_timer_edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/list_timers_action_edit">
+    </item>
+    <item
+        android:id="@+id/popup_timer_delete"
+        android:icon="@drawable/discard"
+        android:title="@string/list_timers_action_delete">
+    </item> <!-- android:icon="@android:drawable/ic_menu_delete" -->
+    <item
+        android:id="@+id/popup_timer_run_repeated"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/list_timers_action_run_repeated">
+    </item>
+
+</menu>

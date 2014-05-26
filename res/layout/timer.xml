@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <NumberPicker
+                    android:id="@+id/timer_picker_hrs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dip"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/cr_timer_hours"
+                    android:textStyle="italic" >
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <NumberPicker
+                    android:id="@+id/timer_picker_mins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dip"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/cr_timer_minutes"
+                    android:textStyle="italic" >
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <NumberPicker
+                    android:id="@+id/timer_picker_secs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dip"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/cr_timer_seconds"
+                    android:textStyle="italic" >
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TableLayout
+            android:id="@+id/tableLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textViewNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cr_timer_nameLabel" />
+
+                <EditText
+                    android:id="@+id/timerName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@string/cr_timer_nameLabel"
+                    android:textSize="20dp" >
+
+                    <requestFocus />
+                </EditText>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textViewCategoryLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cr_timer_category" />
+
+                <Spinner
+                    android:id="@+id/spinner_category"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:prompt="@string/cr_timer_choose_category_prompt" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textViewFavLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cr_timer_favorite" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxFavorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+</ScrollView>
