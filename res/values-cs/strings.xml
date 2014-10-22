@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TimerDroid</string>
+    <string name="main_preferences">Nastavení</string>
+    <string name="main_deletedialog_title_1">Opravdu zastavit</string>
+    <string name="main_deletedialog_title_2">odpočet?</string>
+    <string name="main_deletedialog_yes">Ano</string>
+    <string name="main_deletedialog_no">Ne</string>
+    
+    <!-- Main Menu -->	
+	<string name="menu_about">O aplikaci</string>
+	<string name="menu_feedback">Zpětná vazba</string>
+	<string name="menu_share">Sdílet</string>
+	<string name="menu_new_timer">Nový odpočet</string>
+	<string name="menu_new_category">Nová kategorie</string>
+	<string name="feedback_chooser_title">Vybrat aplikaci</string>
+	<string name="menu_feedback_subject">Feedback Timerdroid Tablet</string>
+	<string name="menu_feedback_address">tomatodevs@googlemail.com</string>
+	<string name="menu_share_url">https://market.android.com/details?id=com.tomatodev.timerdroid</string>
+	<string name="menu_share_subject">Android Timer App</string>
+	<string name="about_author_label">Autor</string>
+	<string name="about_author">Martin Hoffmann</string>
+	<string name="about_version_label">Verze</string>
+	<string name="about_version">2.1.0</string>
+	<string name="about_url_label">Webová stránka</string>
+	<string name="about_url">\s"https://plus.google.com/106539403614439122831" </string>
+	<string name="menu_about_button_text">OK</string>
+
+    <!-- CreateTimer/Update Timer -->
+    <string name="cr_timer_choose_category_prompt">Vybrat kategorii</string>
+	<string name="cr_timer_hours">Hodiny</string>
+	<string name="cr_timer_minutes">Minuty</string>
+	<string name="cr_timer_seconds">Sekundy</string>
+	<string name="cr_timer_save">Uložit</string>
+	<string name="cr_timer_nameLabel">Jméno</string>
+	<string name="cr_timer_custom">Odpočet</string>
+	<string name="cr_timer_category">Kategorie</string>
+	<string name="cr_timer_favorite">Oblíbený</string>
+
+	<string name="prefs_activity_title">Nastavení</string>
+	<string name="prefs_title_alarms">Alarmy</string>
+	<string name="prefs_title">Nastavení</string>
+	<string name="prefs_ringtone_title">Zvuk alarmu</string>
+	<string name="prefs_ringtone_summary">Vybrat zvuk alarmu</string>
+	<string name="prefs_volume_title">Hlasitost alarmu</string>
+	<string name="prefs_volume_dialog">Zvolit hlasitost</string>
+	<string name="prefs_vibration_title">Vibrovat</string>
+	<string name="prefs_vibration_summary">Povolit vibrování</string>
+	<string name="prefs_insistent_alarm_title">Probíhající alarm</string>
+	<string name="prefs_insistent_alarm_summary">Nechat běžet dokud nezastavím</string>
+	<string name="prefs_title_screen">Obrazovka</string>
+	<string name="prefs_screen_unlocked_title">Nezamykat obrazovku</string>
+	<string name="prefs_screen_unlocked_summary">Nezamykat obrazovku pokud běží odpočet</string>
+	
+	<string name="categories_add">Přidat kategorii</string>
+	<string name="categories_action_edit">Upravit</string>
+	<string name="categories_action_delete">Smazat</string>
+	<string name="categories_action_run_in_queue">Spouštět odpočty za sebou</string>
+	<string name="categories_title">Kategorie</string>
+	<string name="categories_add_category">Přidat kategorii</string>
+	<string name="categories_rename_category">Upravit kategorii</string>
+	<string name="categories_choose_image">Vybrat obrázek</string>
+	<string name="categories_deletedialog_title_1">Opravdu smazat tuto kategorii</string>
+    <string name="categories_deletedialog_title_2">se všemi jejími odpočty?</string>
+	
+	<string name="list_timers_title">Odpočty</string>
+	<string name="list_timers_title_favorites">Oblíbené</string>
+	<string name="list_timers_toast_help">Tapnout na odpočet pro spuštění, podržet déle pro úpravu nebo smazání</string>
+	<string name="list_timers_action_edit">Upravit</string>
+	<string name="list_timers_action_delete">Smazat</string>
+	<string name="list_timers_action_run_repeated">Spustit opakovaně</string>
+	<string name="list_timers_choose_action">Vybrat akci</string>
+	<string name="list_timers_repeat_title">Kolikrát se má spustit?</string>
+	<string name="list_timers_delete_title">Smazat odpočet?</string>
+	<string name="list_timers_start">OK</string>
+	<string name="list_timers_cancel">Ukončit</string>
+	
+	<string name="service_running_timers">Spuštěné</string>
+	<string name="service_no_running_timers">Neběží žádné odpočty</string>
+	<string name="service_timer_label">Odpočet</string>
+	<string name="service_running_label">běžící</string>
+	<string name="service_started_label">spuštěný</string>
+	<string name="service_stopped_label">zastavený</string>
+	<string name="service_finished_label">ukončený</string>
+	<string name="service_toast_timer_finished">odpočet skončil</string>	
+	
+	<string name="widget_loading">načítání&#8230;</string>
+	<string name="widget_choose_timer">Vybrat odpočet</string>	
+	<string name="create_timer_save">Uložit</string>	
+	<string name="create_timer_start">Spustit</string>	
+	<string name="create_timer_no_time_set">Vyberte prosím čas</string>	
+	<string name="create_timer_no_name_set">Vyberte prosím jméno</string>	
+	<string name="create_timer_timer_saved">Odpočet uložen</string>	
+	<string name="running_timers">Běžící odpočty</string>	
+	<string name="no_timers_running">Neběží žádné odpočty</string>	
+	<string name="no_timers_in_this_category">V této kategorii nejsou žádné odpočty</string>
+		
+	<string name="popup_timer_stop">Zastavit</string>
+	
+</resources>
