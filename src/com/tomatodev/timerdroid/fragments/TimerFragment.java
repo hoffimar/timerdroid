@@ -69,7 +69,7 @@ public class TimerFragment extends Fragment {
 		pickerSecs = (NumberPicker) getActivity().findViewById(R.id.timer_picker_secs);
 
 		pickerHrs.setMinValue(0);
-		pickerHrs.setMaxValue(50);
+		pickerHrs.setMaxValue(1000);
 		pickerHrs.setValue(0);
 		pickerHrs.setOnLongPressUpdateInterval(200);
 

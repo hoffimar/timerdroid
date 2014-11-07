@@ -21,7 +21,7 @@
 	<string name="about_author_label">Autor</string>
 	<string name="about_author">Martin Hoffmann</string>
 	<string name="about_version_label">Verze</string>
-	<string name="about_version">2.1.0</string>
+	<string name="about_version">2.1.1</string>
 	<string name="about_url_label">Webová stránka</string>
 	<string name="about_url">\s"https://plus.google.com/106539403614439122831" </string>
 	<string name="menu_about_button_text">OK</string>

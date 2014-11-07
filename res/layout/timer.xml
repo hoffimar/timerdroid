@@ -90,7 +90,10 @@
         <TableLayout
             android:id="@+id/tableLayout1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp">
 
             <TableRow
                 android:id="@+id/tableRow1"
@@ -101,7 +104,8 @@
                     android:id="@+id/textViewNameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cr_timer_nameLabel" />
+                    android:text="@string/cr_timer_nameLabel"
+                    android:layout_marginRight="3dp" />
 
                 <EditText
                     android:id="@+id/timerName"
@@ -125,7 +129,8 @@
                     android:id="@+id/textViewCategoryLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cr_timer_category" />
+                    android:text="@string/cr_timer_category"
+                    android:layout_marginRight="3dp" />
 
                 <Spinner
                     android:id="@+id/spinner_category"
@@ -144,7 +149,8 @@
                     android:id="@+id/textViewFavLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cr_timer_favorite" />
+                    android:text="@string/cr_timer_favorite"
+                    android:layout_marginRight="3dp" />
 
                 <CheckBox
                     android:id="@+id/checkBoxFavorite"

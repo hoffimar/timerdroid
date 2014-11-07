@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="#000000"
+        android:background="#00000000"
         android:src="@drawable/dropdown_button" >
     </ImageButton>
 
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
-        android:background="#000000"
+        android:background="#00000000"
         android:src="@drawable/play"
         android:tint="#a8c24e" >
     </ImageButton>
