@@ -21,9 +21,9 @@
 	<string name="about_author_label">Author</string>
 	<string name="about_author">Martin Hoffmann</string>
 	<string name="about_version_label">Version</string>
-	<string name="about_version">2.1.1</string>
+	<string name="about_version">2.1.2</string>
 	<string name="about_url_label">Website</string>
-	<string name="about_url">\s"https://plus.google.com/106539403614439122831" </string>
+	<string name="about_url">\s"https://github.com/hoffimar/timerdroid"</string>
 	<string name="menu_about_button_text">OK</string>
 
     <!-- CreateTimer/Update Timer -->
