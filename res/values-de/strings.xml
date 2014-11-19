@@ -25,12 +25,8 @@
 	<string name="menu_share">Weiterleiten</string>
 	<string name="menu_share_url">https://market.android.com/details?id=com.tomatodev.timerdroid</string>
 	<string name="menu_share_subject">Android Timer App</string>
-	<string name="menu_delete_all">Alle Timer löschen</string>
-	<string name="menu_delete_dialog_title">Wirklich alle Kategorien und Timer löschen?</string>
 	
 	<!-- CreateTimer/Update Timer -->
-	<string name="cr_timer_title">Neuen Timer anlegen</string>
-	<string name="up_timer_title">Timer editieren</string>
 	<string name="cr_timer_choose_category_prompt">Kategorieauswahl</string>
 	<string name="cr_timer_hours">Stunden</string>
 	<string name="cr_timer_minutes">Minuten</string>
@@ -71,20 +67,18 @@
 	<string name="categories_choose_image">Bild auswählen</string>
 	<string name="categories_deletedialog_title_1">Diese Kategorie und alle Timer darin</string>
     <string name="categories_deletedialog_title_2">wirklich löschen?</string>
-    <string name="categories_toast_help">Lange drücken zum ändern oder löschen</string>
 	
 	<string name="list_timers_title">Timer</string>
 	<string name="list_timers_title_favorites">Favoriten</string>
 	<string name="list_timers_action_edit">Ändern</string>
 	<string name="list_timers_action_delete">Löschen</string>
-	<string name="list_timers_action_run">Starten</string>
 	<string name="list_timers_action_run_repeated">Starten (Wdh.)</string>
 	<string name="list_timers_choose_action">Auswahl</string>
 	<string name="list_timers_repeat_title">Wie oft starten?</string>
 	<string name="list_timers_start">Start</string>
 	<string name="list_timers_cancel">Abbrechen</string>
 	<string name="list_timers_toast_help">Press a timer to start it, press longer to edit or delete</string>
-	<string name="list_timers_delete_title">Delete timer?</string>
+	<string name="list_timers_delete_title">Timer löschen?</string>
 	
 	<string name="service_running_timers">Aktuell</string>
 	<string name="service_no_running_timers">Keine laufenden Timer</string>
@@ -104,4 +98,5 @@
 	<string name="no_timers_in_this_category">Keine Timer in dieser Kategorie</string>
 	
 	<string name="popup_timer_stop">Stop</string>
+    <string name="home">Home</string>
 </resources>

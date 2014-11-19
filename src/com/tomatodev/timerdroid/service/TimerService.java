@@ -1,9 +1,5 @@
 package com.tomatodev.timerdroid.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +7,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -23,6 +22,10 @@ import android.widget.RemoteViews;
 import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.activities.MainActivity;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TimerService extends Service {
 
@@ -61,24 +64,27 @@ public class TimerService extends Service {
 	}
 
 	private void createNotification(String tickerText, int type) {
-		int icon = R.drawable.notification;
-		long when = System.currentTimeMillis();
-
-		Notification notification = new Notification(icon, tickerText, when);
 		Context context = getApplicationContext();
 		StringBuffer text = new StringBuffer("");
 		text.append(getString(R.string.service_running_timers) + ": ");
 		boolean timerRunning = false;
+        int numberOfRunningTimers = 0;
+        long minimumTimeleft = Long.MAX_VALUE;
+
 		for (CountDown countdown : timers.values()) {
 			if (countdown.isStarted()) {
 				text.append(countdown.getName() + ", ");
 				timerRunning = true;
+                numberOfRunningTimers++;
+                if (countdown.getTimeLeft() < minimumTimeleft) {
+                    minimumTimeleft = countdown.getTimeLeft();
+                }
 			}
 		}
 		if (!timerRunning) {
 			text = new StringBuffer(getString(R.string.service_no_running_timers));
 		} else {
-			// delete the unncessary ',' at the end
+			// delete the unnecessary ',' at the end
 			text.delete(text.length() - 2, text.length() - 1);
 		}
 		CharSequence contentTitle = getString(R.string.app_name);
@@ -87,10 +93,23 @@ public class TimerService extends Service {
 				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-		notification.setLatestEventInfo(context, contentTitle, text, contentIntent);
+        Bitmap iconTimer = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.timer);
 
-		if (type == NOTIFICATION_TYPE_STOPPED) {
+        Notification.Builder notificationBuilder = new Notification.Builder(context)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_stat_action_schedule) // Needed to not get generic Android notification
+                .setLargeIcon(iconTimer)
+                .setFullScreenIntent(contentIntent, false)
+                .setContentIntent(contentIntent)
+                .setNumber(numberOfRunningTimers)
+                .setWhen(System.currentTimeMillis() + minimumTimeleft)
+                .setOngoing(true);
 
+        Notification notification = notificationBuilder.getNotification();// build() only working with API level >= 16
+
+        if (type == NOTIFICATION_TYPE_STOPPED) {
 			startSoundNotification(tickerText);
 		}
 
@@ -98,67 +117,63 @@ public class TimerService extends Service {
 			startForeground(NOTIFICATION_ID_FOREGROUND, notification);
 		} else {
 			stopForeground(true);
-			mNotificationManager.notify(NOTIFICATION_ID, notification);
 		}
 
 	}
 
-	private void startSoundNotification(String text) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    private void startSoundNotification(String text) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		// set ringtone
-		Notification notificationSound = new Notification();
+        Bitmap iconTimer = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                R.drawable.timer);
 
-		String ringtone = prefs.getString("ringtone", "");
-		if (ringtone.equals("")) {
-			Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-			notificationSound.sound = alert;
-			notificationSound.audioStreamType = SOUND_STREAM;
-		} else {
-			notificationSound.sound = Uri.parse(ringtone);
-			notificationSound.audioStreamType = SOUND_STREAM;
-		}
+        String ringtone = prefs.getString("ringtone", "");
+        Uri soundUri = ringtone.equals("") ? RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM) : Uri.parse(ringtone);
 
-		// If device is set to silent mode by user, overwrite it
-		AudioManager audio = (AudioManager) getApplicationContext().getSystemService(
-				Context.AUDIO_SERVICE);
-		int currentVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
-		int currentRingerMode = audio.getRingerMode();
-		int max = audio.getStreamMaxVolume(SOUND_STREAM);
-		
-//		audio.setStreamSolo(SOUND_STREAM, false);
-		audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-		int volume = (int) Math.round(prefs.getInt("alarm_volume", 5) * 0.1 * max);
-		audio.setStreamVolume(SOUND_STREAM, volume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+        Notification notificationSound = new Notification.Builder(getApplicationContext())
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_stat_action_schedule) // Needed to not get generic Android notification (at least for service startForeground
+                .setLargeIcon(iconTimer)
+                .setLights(Color.RED, 200, 600)
+                .setSound(soundUri, SOUND_STREAM)
+                .getNotification();// build() only working with API level >= 16
 
-		if (prefs.getBoolean("insistent_alarm", true)) {
-			notificationSound.flags |= Notification.FLAG_INSISTENT;
-		}
-		notificationSound.icon = R.drawable.notification;
-		
-		// TODO change text and icon if needed at all (2 icons in status bar...)
-		RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_layout);
-		contentView.setImageViewResource(R.id.notification_image, R.drawable.timer);
-		contentView.setTextViewText(R.id.notification_text, text);
-		notificationSound.contentView = contentView;
-//		contentView.setOnClickPendingIntent(R.id.notification_button, getDialogPendingIntent("Tapped the 'dialog' button in the notification."));
+        // TODO what about this insistent preference, can it be done another way?
+        if (prefs.getBoolean("insistent_alarm", true)) {
+            notificationSound.flags |= Notification.FLAG_INSISTENT;
+        }
 
-		mNotificationManager.notify(NOTIFICATION_ID_SOUND, notificationSound);
+        // If device is set to silent mode by user, overwrite it
+        AudioManager audio = (AudioManager) getApplicationContext().getSystemService(
+                Context.AUDIO_SERVICE);
+        int currentVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
+        int currentRingerMode = audio.getRingerMode();
+        int max = audio.getStreamMaxVolume(SOUND_STREAM);
 
-		// reset volume and ringer mode
-//		audio.setStreamSolo(SOUND_STREAM, false);
-		audio.setRingerMode(currentRingerMode);
-		audio.setStreamVolume(AudioManager.STREAM_RING, currentVolume, 0);
+        audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        int volume = (int) Math.round(prefs.getInt("alarm_volume", 5) * 0.1 * max);
+        audio.setStreamVolume(SOUND_STREAM, volume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
 
-		// Show application
-		MyApplication.showRunningTimers = true;
-		Intent i = new Intent(getApplicationContext(), MainActivity.class);
-		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
-				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		getApplication().startActivity(i);
-	}
+        mNotificationManager.notify(NOTIFICATION_ID_SOUND, notificationSound);
 
-	public void stopSound() {
+        // reset volume and ringer mode
+        audio.setRingerMode(currentRingerMode);
+        audio.setStreamVolume(AudioManager.STREAM_RING, currentVolume, 0);
+
+        startMainActivity();
+    }
+
+    private void startMainActivity() {
+        // Show application
+        MyApplication.showRunningTimers = true;
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        getApplication().startActivity(i);
+    }
+
+    public void stopSound() {
 		mNotificationManager.cancel(NOTIFICATION_ID_SOUND);
 	}
 

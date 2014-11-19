@@ -27,11 +27,11 @@ public class MainActivity extends Activity {
         bar.setTitle(R.string.app_name);
 
         bar.addTab(bar.newTab()
-                .setText("Home")
+                .setText(R.string.home)
                 .setTabListener(new TabListener<RunningTimersFragment>(
                         this, "running", RunningTimersFragment.class)));
         bar.addTab(bar.newTab()
-                .setText("Categories")
+                .setText(R.string.categories_title)
                 .setTabListener(new TabListener<CategoriesFragment>(
                         this, "categories", CategoriesFragment.class)));
 

@@ -1,9 +1,9 @@
 package com.tomatodev.timerdroid.service;
 
+import android.os.CountDownTimer;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import android.os.CountDownTimer;
 
 public abstract class AbstractCountDown extends CountDownTimer {
 

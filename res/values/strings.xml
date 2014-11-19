@@ -96,5 +96,6 @@
 	<string name="no_timers_in_this_category">No timers in this category</string>
 		
 	<string name="popup_timer_stop">Stop</string>
-	
+    <string name="home">Home</string>
+
 </resources>

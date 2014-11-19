@@ -96,5 +96,6 @@
 	<string name="no_timers_in_this_category">V této kategorii nejsou žádné odpočty</string>
 		
 	<string name="popup_timer_stop">Zastavit</string>
-	
+    <string name="home">Domácí</string>
+
 </resources>

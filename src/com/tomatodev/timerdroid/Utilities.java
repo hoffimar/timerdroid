@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
 public class Utilities {
 
@@ -18,7 +19,6 @@ public class Utilities {
 
 		seconds = seconds % 60;
 		minutes = minutes % 60;
-		hours = hours % 60;
 
 		String secondsD = String.valueOf(seconds);
 		String minutesD = String.valueOf(minutes);
@@ -28,10 +28,13 @@ public class Utilities {
 			secondsD = "0" + seconds;
 		if (minutes < 10)
 			minutesD = "0" + minutes;
-		if (hours < 10)
-			hoursD = "0" + hours;
 
-		output = hoursD + " : " + minutesD + " : " + secondsD;
+        if (hours > 0) {
+            output = hoursD + " : " + minutesD + " : " + secondsD;
+        } else {
+            output = minutesD + " : " + secondsD;
+        }
+
 		return output;
 	}
 	
@@ -42,7 +45,6 @@ public class Utilities {
 
 		seconds = seconds % 60;
 		minutes = minutes % 60;
-		hours = hours % 60;
 
 		String secondsD = String.valueOf(seconds);
 		String minutesD = String.valueOf(minutes);
@@ -69,7 +71,6 @@ public class Utilities {
 
 		seconds = seconds % 60;
 		minutes = minutes % 60;
-		hours = hours % 60;
 
 		String secondsD = String.valueOf(seconds);
 		String minutesD = String.valueOf(minutes);
@@ -96,26 +97,25 @@ public class Utilities {
 	}
 	
 	public static int[] lengthToTime(long millis) {
-
 		int [] times = new int [3];
 		long seconds = Math.round(millis / 1000.0);
-		long minutes = seconds / 60;
-		long hours = minutes / 60;
+		long minutes = seconds / 60L;
+		long hours = minutes / 60L;
 
-		times [0] = (int) (seconds % 60);
-		times [1] = (int) (minutes % 60);
-		times [2] = (int) (hours % 60);
+		times [0] = (int) (seconds % 60L);
+		times [1] = (int) (minutes % 60L);
+		times [2] = (int) (hours);
 
 		return times;
 	}
 	
 	public static long computeLength(int hour, int minute, int second) {
 		long counter;
-		int cHour = hour * 3600000;
-		int cMinute = minute * 60000;
-		int cSecond = second * 1000;
+		long cHour = hour * 3600000L;
+		long cMinute = minute * 60000L;
+		long cSecond = second * 1000L;
 		counter = cHour + cMinute + cSecond;
-		return counter;
+        return counter;
 	}
 	
 	// decodes image and scales it to reduce memory consumption
