@@ -394,7 +394,6 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 
 				}
 			});
-
 		}
 	}
 
@@ -493,7 +492,6 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 				counters.clear();
 				views.clear();
 
-				RunningTimersFragment.this.fillTimerTable(localBinder);
 			} else {
 				Log.e(Constants.LOG_TAG, "onFinish: textview is null");
 			}
