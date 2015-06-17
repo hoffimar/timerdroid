@@ -28,3 +28,5 @@ tmp/**
 *.bak
 tmp/**/*
 *.swp
+
+.idea/workspace.xml
