@@ -17,6 +17,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 
 import com.tomatodev.timerdroid.MyApplication;
@@ -93,7 +95,7 @@ public class TimerService extends Service {
         Bitmap iconTimer = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.timer);
 
-        Notification.Builder notificationBuilder = new Notification.Builder(context)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_stat_action_schedule) // Needed to not get generic Android notification
@@ -104,7 +106,7 @@ public class TimerService extends Service {
                 .setWhen(System.currentTimeMillis() + minimumTimeleft)
                 .setOngoing(true);
 
-        Notification notification = notificationBuilder.getNotification();// build() only working with API level >= 16
+        Notification notification = notificationBuilder.build();//getNotification();// build() only working with API level >= 16
 
         if (type == NOTIFICATION_TYPE_STOPPED) {
 			startSoundNotification(tickerText);
@@ -129,7 +131,7 @@ public class TimerService extends Service {
 
         PendingIntent contentIntent = getIntentStartingApp();
 
-        Notification notificationSound = new Notification.Builder(getApplicationContext())
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_stat_action_schedule) // Needed to not get generic Android notification (at least for service startForeground
@@ -137,8 +139,13 @@ public class TimerService extends Service {
                 .setLights(Color.RED, 200, 600)
                 .setFullScreenIntent(contentIntent, false)
                 .setContentIntent(contentIntent)
-                .setSound(soundUri, SOUND_STREAM)
-                .getNotification();// build() only working with API level >= 16
+                .setSound(soundUri, SOUND_STREAM);
+
+        // Currently not needed since sound stops when pulling down the notification twice
+//        NotificationCompat.Action action = new NotificationCompat.Action.Builder(android.R.drawable.ic_delete, "Delete", contentIntent).build();
+//        notificationBuilder.addAction(action);
+
+        Notification notificationSound = notificationBuilder.build();
 
         // TODO what about this insistent preference, can it be done another way?
         if (prefs.getBoolean("insistent_alarm", true)) {
@@ -162,14 +169,21 @@ public class TimerService extends Service {
         audio.setRingerMode(currentRingerMode);
         audio.setStreamVolume(AudioManager.STREAM_RING, currentVolume, 0);
 
-        startMainActivity();
+//        startMainActivity();
     }
 
     private PendingIntent getIntentStartingApp() {
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        Intent resultIntent = new Intent(this, MainActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        return resultPendingIntent;
     }
 
     private void startMainActivity() {
