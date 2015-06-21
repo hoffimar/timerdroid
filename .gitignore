@@ -11,6 +11,7 @@
 # Generated files
 bin/
 gen/
+out/
 
 # Gradle files
 .gradle/
@@ -29,4 +30,10 @@ tmp/**
 tmp/**/*
 *.swp
 
-.idea/workspace.xml
+# Android Studio
+.idea
+*.iml
+
+# Eclipse project files
+.classpath
+.project
