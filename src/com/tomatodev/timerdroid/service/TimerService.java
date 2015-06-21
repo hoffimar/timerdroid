@@ -88,10 +88,7 @@ public class TimerService extends Service {
 			text.delete(text.length() - 2, text.length() - 1);
 		}
 		CharSequence contentTitle = getString(R.string.app_name);
-		Intent notificationIntent = new Intent(this, MainActivity.class);
-		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
-				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        PendingIntent contentIntent = getIntentStartingApp();
 
         Bitmap iconTimer = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.timer);
@@ -130,12 +127,16 @@ public class TimerService extends Service {
         String ringtone = prefs.getString("ringtone", "");
         Uri soundUri = ringtone.equals("") ? RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM) : Uri.parse(ringtone);
 
+        PendingIntent contentIntent = getIntentStartingApp();
+
         Notification notificationSound = new Notification.Builder(getApplicationContext())
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_stat_action_schedule) // Needed to not get generic Android notification (at least for service startForeground
                 .setLargeIcon(iconTimer)
                 .setLights(Color.RED, 200, 600)
+                .setFullScreenIntent(contentIntent, false)
+                .setContentIntent(contentIntent)
                 .setSound(soundUri, SOUND_STREAM)
                 .getNotification();// build() only working with API level >= 16
 
@@ -162,6 +163,13 @@ public class TimerService extends Service {
         audio.setStreamVolume(AudioManager.STREAM_RING, currentVolume, 0);
 
         startMainActivity();
+    }
+
+    private PendingIntent getIntentStartingApp() {
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(this, 0, notificationIntent, 0);
     }
 
     private void startMainActivity() {
