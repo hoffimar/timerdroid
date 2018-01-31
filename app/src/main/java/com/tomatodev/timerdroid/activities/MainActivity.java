@@ -5,7 +5,13 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.view.View;
 
 import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
@@ -17,13 +23,12 @@ public class MainActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        
+
         final ActionBar bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE, ActionBar.DISPLAY_SHOW_TITLE);
         bar.setDisplayShowHomeEnabled(true);
-        
+
         bar.setTitle(R.string.app_name);
 
         bar.addTab(bar.newTab()
@@ -38,9 +43,19 @@ public class MainActivity extends Activity {
         if (savedInstanceState != null) {
             bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
         }
+
     }
-	
-	@Override
+
+    @Nullable
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        View view = super.onCreateView(name, context, attrs);
+
+
+        return view;
+    }
+
+    @Override
 	protected void onResume() {
 		super.onResume();
 		if (MyApplication.showRunningTimers) {
