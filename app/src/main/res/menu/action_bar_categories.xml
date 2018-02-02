@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/menu_add_category"
-        android:icon="@drawable/add"
-        android:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_action_category_add"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_new_category"/>
     <item
         android:id="@+id/menu_settings"
-        android:icon="@drawable/settings"
-        android:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_action_settings"
+        android:showAsAction="always"
         android:title="@string/main_preferences"/>
     <item
         android:id="@+id/menu_about"

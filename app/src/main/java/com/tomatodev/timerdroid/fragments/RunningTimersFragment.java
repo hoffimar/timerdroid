@@ -308,17 +308,15 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 			TextView tvTime = new TextView(getActivity());
 			if (timers.get(timerNumber).isStarted()) {
 				tvTime.setText(Utilities.formatTime(timers.get(timerNumber).getTimeLeft()));
-				tvTime.setTextColor(0xffffffff);
-				// tvName.setTextColor(Color.argb(255, 102, 153, 255));
-				// tvName.setTextColor(Color.rgb(168, 194, 78));
-				tvName.setTextColor(Color.rgb(255, 255, 255));
+				//tvTime.setTextColor(0xffffffff);
+				//tvName.setTextColor(Color.rgb(255, 255, 255));
 			} else {
 				tvTime.setText(Utilities.formatTime(0));
 				tvTime.setTextColor(0xffff0000);
 				tvName.setTextColor(0xffff0000);
 			}
 			// tvTime.setTextSize(20);
-			tvTime.setTextSize(19);
+			tvTime.setTextSize(16);
 			row.addView(tvTime);
 			tvTime.setPadding(3, 3, 3, 3);
 			tvTime.setGravity(Gravity.RIGHT);

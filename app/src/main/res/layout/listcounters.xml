@@ -13,8 +13,7 @@
         android:padding="5sp"
         android:singleLine="false"
         android:text=""
-        android:textColor="#fff"
-        android:textSize="20sp" >
+        android:textSize="16sp" >
     </TextView>
 
     <ImageButton
@@ -22,8 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="#00000000"
-        android:src="@drawable/dropdown_button" >
+        android:background="@null"
+        android:src="@drawable/ic_arrow_drop_down_black_24dp" >
     </ImageButton>
 
     <TextView
@@ -32,10 +31,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
         android:gravity="right"
-        android:textColor="#fff"
         android:padding="5sp"
         android:text=""
-        android:textSize="20sp" >
+        android:textSize="16sp" >
     </TextView>
 
     <ImageButton
@@ -43,10 +41,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
-        android:background="#00000000"
+        android:background="@null"
         android:src="@drawable/play"
         android:tint="#a8c24e" >
     </ImageButton>
-    <!-- android:src="@android:drawable/ic_media_play" -->
 
 </LinearLayout>

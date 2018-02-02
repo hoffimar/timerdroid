@@ -14,7 +14,7 @@
 		-->
 		<EditText android:id="@+id/rename_category_inputfield"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal" android:width="250sp"></EditText>
+			android:layout_gravity="center_horizontal" android:width="250sp"/>
 	</LinearLayout>
 
 	<LinearLayout android:layout_width="fill_parent"
@@ -22,10 +22,10 @@
 		<Button android:text="@string/categories_choose_image"
 			android:id="@+id/rename_category_chooseimage_button"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_gravity="left"></Button>
+			android:layout_gravity="left"/>
 		<Button android:text="@string/cr_timer_save" android:id="@+id/rename_category_okbutton"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_gravity="right"></Button>
+			android:layout_gravity="right"/>
 	</LinearLayout>
 
 </LinearLayout>

@@ -3,24 +3,24 @@
 
     <item
         android:id="@+id/menu_add_timer"
-        android:icon="@drawable/add"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/menu_new_timer"/><!-- android:icon="@android:drawable/ic_menu_add" -->
+        android:icon="@drawable/ic_action_add"
+        android:showAsAction="always"
+        android:title="@string/menu_new_timer" />
     <item
         android:id="@+id/menu_settings"
-        android:icon="@drawable/settings"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/main_preferences"/>
+        android:icon="@drawable/ic_action_settings"
+        android:showAsAction="always"
+        android:title="@string/main_preferences" />
     <item
         android:id="@+id/menu_about"
         android:icon="@android:drawable/ic_menu_info_details"
         android:showAsAction="withText"
-        android:title="@string/menu_about"/>
+        android:title="@string/menu_about" />
     <item
         android:id="@+id/menu_feedback"
         android:icon="@android:drawable/ic_menu_edit"
         android:showAsAction="withText"
-        android:title="@string/menu_feedback"/>
+        android:title="@string/menu_feedback" />
     <item
         android:id="@+id/menu_share"
         android:icon="@android:drawable/ic_menu_share"

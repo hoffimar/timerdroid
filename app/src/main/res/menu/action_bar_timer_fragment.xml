@@ -10,9 +10,6 @@
         android:id="@+id/menu_save_timer"
         android:icon="@drawable/accept"
         android:showAsAction="ifRoom|withText"
-        android:title="Save"/>
-    
-    <!-- @android:drawable/ic_media_play -->
-    <!-- android:icon="@android:drawable/ic_menu_save" -->
+        android:title="Save" />
 
 </menu>
