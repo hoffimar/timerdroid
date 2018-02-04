@@ -1,19 +1,16 @@
 package com.tomatodev.timerdroid.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
-import android.app.ListFragment;
-import android.app.LoaderManager;
 import android.content.ComponentName;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,12 +18,15 @@ import android.view.MenuItem;
 import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.TimerCursorAdapter;
-import com.tomatodev.timerdroid.activities.MainActivity;
+import com.tomatodev.timerdroid.activities.HomeActivity;
 import com.tomatodev.timerdroid.activities.TimerActivity;
 import com.tomatodev.timerdroid.persistence.TimersProvider;
 import com.tomatodev.timerdroid.service.TimerDescription;
 import com.tomatodev.timerdroid.service.TimerService;
 import com.tomatodev.timerdroid.service.TimerService.LocalBinder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListTimersFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -39,8 +39,6 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
 		setHasOptionsMenu(true);
-		
-		getActivity().getActionBar().setHomeButtonEnabled(true);
 	}
 	
 	@Override
@@ -69,7 +67,7 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 			}
 		};
 		boolean success = getActivity().getApplicationContext().bindService(intent,
-				serviceConnection, Activity.BIND_AUTO_CREATE);
+				serviceConnection, AppCompatActivity.BIND_AUTO_CREATE);
 		
 		categoryId = getActivity().getIntent().getIntExtra("category_id", 1);
 //		Log.v("bla", "id: " + categoryId);
@@ -110,7 +108,7 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 				TimerDescription firstTimer = queue.remove(0);
 				localBinder.getService().startTimer(firstTimer.getName(),
 						firstTimer.getTime(), queue);
-				Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+				Intent intent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
 				MyApplication.showRunningTimers = true;
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 						| Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -125,7 +123,7 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 			return true;
 			
 		case android.R.id.home:
-			Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+			Intent intent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
 			MyApplication.showRunningTimers = true;
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 					| Intent.FLAG_ACTIVITY_SINGLE_TOP

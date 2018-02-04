@@ -1,0 +1,9 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="screen_unlocked"
+        android:summary="@string/prefs_screen_unlocked_summary"
+        android:title="@string/prefs_screen_unlocked_title" />
+
+</PreferenceScreen>

@@ -1,12 +1,12 @@
 package com.tomatodev.timerdroid;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -105,9 +105,7 @@ public class TimerCursorAdapter extends CursorAdapter {
 				if (timerListFragment != null) {
 					MyApplication.showRunningTimers = true;
 					timerListFragment.getActivity().finish();
-//					Intent i = new Intent(context, MainActivity.class);
-//					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
-//							| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
 				} else {
 					RunningTimersFragment runningFragment = (RunningTimersFragment) fm.findFragmentByTag("running");
 					if (runningFragment != null) {

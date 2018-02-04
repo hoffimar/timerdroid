@@ -1,27 +1,19 @@
 package com.tomatodev.timerdroid.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.app.Service;
 import android.content.ComponentName;
-import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,13 +36,18 @@ import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.TimerCursorAdapter;
 import com.tomatodev.timerdroid.Utilities;
-import com.tomatodev.timerdroid.activities.SettingsActivity;
 import com.tomatodev.timerdroid.activities.TimerActivity;
 import com.tomatodev.timerdroid.persistence.TimersProvider;
 import com.tomatodev.timerdroid.service.AbstractCountDown;
 import com.tomatodev.timerdroid.service.TimerService;
 import com.tomatodev.timerdroid.service.TimerService.CountDown;
 import com.tomatodev.timerdroid.service.TimerService.LocalBinder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RunningTimersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -122,28 +119,6 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 		case R.id.menu_add_timer:
 			Intent i = new Intent(getActivity(), TimerActivity.class);
 			startActivity(i);
-			return true;
-		case R.id.menu_settings:
-			Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
-			startActivity(settingsIntent);
-			return true;
-		case R.id.menu_about:
-			DialogFragment newFragment = AboutDialogFragment.newInstance();
-		    newFragment.show(getFragmentManager(), "about_dialog");
-		    return true;
-		case R.id.menu_feedback:
-			Intent myIntent = new Intent(android.content.Intent.ACTION_SEND);
-			myIntent.setType("text/plain");
-			myIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.menu_feedback_subject));
-			myIntent.putExtra(Intent.EXTRA_EMAIL, new String [] { getString(R.string.menu_feedback_address) });
-			startActivity(Intent.createChooser(myIntent, getResources().getString(R.string.feedback_chooser_title)));
-			return true;
-		case R.id.menu_share:
-			Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.menu_share_subject));
-			shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.menu_share_url));// TODO: fkt. das?
-			startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.feedback_chooser_title)));
 			return true;
 		default:
 			break;
@@ -453,17 +428,15 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 		return cl;
 	}
 
-	@Override
-	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
-		items.swapCursor(arg1);
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
+		items.swapCursor(data);
+    }
 
-	}
-
-	@Override
-	public void onLoaderReset(Loader<Cursor> arg0) {
+    @Override
+    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
 		items.swapCursor(null);
-
-	}
+    }
 
 	public class MyCount extends AbstractCountDown {
 

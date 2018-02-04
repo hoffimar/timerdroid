@@ -1,11 +1,11 @@
 package com.tomatodev.timerdroid.fragments;
 
-import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +70,7 @@ public class NewCategoryDialogFragment extends DialogFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == SELECT_IMAGE) {
-			if (resultCode == Activity.RESULT_OK) {
+			if (resultCode == AppCompatActivity.RESULT_OK) {
 				Uri selectedImage = data.getData();
 				imageUri = selectedImage;
 			}

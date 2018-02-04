@@ -1,8 +1,5 @@
 package com.tomatodev.timerdroid.fragments;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -12,6 +9,8 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,7 +28,7 @@ import android.widget.Toast;
 import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.Utilities;
-import com.tomatodev.timerdroid.activities.MainActivity;
+import com.tomatodev.timerdroid.activities.HomeActivity;
 import com.tomatodev.timerdroid.persistence.CategoriesProvider;
 import com.tomatodev.timerdroid.persistence.CategoriesProvider.CategoriesTable;
 import com.tomatodev.timerdroid.persistence.DbAdapter;
@@ -54,10 +53,6 @@ public class TimerFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		
-		ActionBar actionBar = getActivity().getActionBar();
-//	    actionBar.setDisplayShowHomeEnabled(true);
-	    actionBar.setHomeButtonEnabled(true);
 	}
 
 	@Override
@@ -104,7 +99,7 @@ public class TimerFragment extends Fragment {
 			}
 		};
 		boolean success = getActivity().getApplicationContext().bindService(intent, serviceConnection,
-				Activity.BIND_AUTO_CREATE);
+				AppCompatActivity.BIND_AUTO_CREATE);
 		// if (!success) {
 		// // TODO: do something
 		// }
@@ -155,7 +150,7 @@ public class TimerFragment extends Fragment {
 			saveTimer();
 			return true;
 		case android.R.id.home:
-			Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+			Intent intent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
 			MyApplication.showRunningTimers = true;
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 					| Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -177,7 +172,7 @@ public class TimerFragment extends Fragment {
 		}
 		MyApplication.showRunningTimers = true;
 		getActivity().finish();
-		Intent i = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+		Intent i = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
 				| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	}

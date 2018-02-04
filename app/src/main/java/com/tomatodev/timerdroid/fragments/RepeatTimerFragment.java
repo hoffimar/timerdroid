@@ -1,11 +1,8 @@
 package com.tomatodev.timerdroid.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +11,22 @@ import android.widget.NumberPicker;
 
 import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
-import com.tomatodev.timerdroid.activities.MainActivity;
+import com.tomatodev.timerdroid.activities.HomeActivity;
 import com.tomatodev.timerdroid.service.TimerDescription;
 import com.tomatodev.timerdroid.service.TimerService.LocalBinder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RepeatTimerFragment extends DialogFragment {
 
 	LocalBinder localBinder;
 	String timerName;
 	long timerTime;
+
+	public RepeatTimerFragment() {
+		// TODO delete constructor with parameters
+	}
 	
 	public RepeatTimerFragment(LocalBinder localBinder, String timerName, long timerTime) {
 		this.localBinder = localBinder;
@@ -57,7 +61,7 @@ public class RepeatTimerFragment extends DialogFragment {
 				
 				localBinder.getService().startTimer(timerName,
 						timerTime, queue);
-				Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+				Intent intent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
 						| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				getActivity().startActivity(intent);

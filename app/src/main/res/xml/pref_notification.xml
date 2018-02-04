@@ -1,0 +1,26 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RingtonePreference
+        android:key="ringtone"
+        android:ringtoneType="alarm"
+        android:showDefault="true"
+        android:showSilent="false"
+        android:defaultValue="content://settings/system/alarm_sound"
+        android:summary="@string/prefs_ringtone_summary"
+        android:title="@string/prefs_ringtone_title" />
+
+    <SeekBarPreference
+        android:defaultValue="5"
+        android:dialogMessage="@string/prefs_volume_dialog"
+        android:key="alarm_volume"
+        android:max="10"
+        android:text=""
+        android:title="@string/prefs_volume_title" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="insistent_alarm"
+        android:summary="@string/prefs_insistent_alarm_summary"
+        android:title="@string/prefs_insistent_alarm_title" />
+
+</PreferenceScreen>

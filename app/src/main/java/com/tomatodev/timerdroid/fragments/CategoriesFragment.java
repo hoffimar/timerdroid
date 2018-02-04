@@ -1,21 +1,20 @@
 package com.tomatodev.timerdroid.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
-import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,9 +28,8 @@ import android.widget.ListView;
 import com.tomatodev.timerdroid.CategoriesCursorAdapter;
 import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
+import com.tomatodev.timerdroid.activities.HomeActivity;
 import com.tomatodev.timerdroid.activities.ListTimersActivity;
-import com.tomatodev.timerdroid.activities.MainActivity;
-import com.tomatodev.timerdroid.activities.SettingsActivity;
 import com.tomatodev.timerdroid.persistence.CategoriesProvider;
 import com.tomatodev.timerdroid.persistence.CategoriesProvider.CategoriesTable;
 
@@ -48,7 +46,7 @@ public class CategoriesFragment extends ListFragment implements LoaderManager.Lo
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		
-		getActivity().getActionBar().setHomeButtonEnabled(true);
+//		getActivity().getActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
@@ -244,30 +242,9 @@ public class CategoriesFragment extends ListFragment implements LoaderManager.Lo
 		    NewCategoryDialogFragment newCategoryFragment = new NewCategoryDialogFragment();
 		    newCategoryFragment.show(ft, "dialog");
 			return true;
-		case R.id.menu_settings:
-			Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
-			startActivity(settingsIntent);
-			return true;
-		case R.id.menu_about:
-			DialogFragment newFragment = AboutDialogFragment.newInstance();
-		    newFragment.show(getFragmentManager(), "about_dialog");
-		    return true;
-		case R.id.menu_feedback:
-			Intent myIntent = new Intent(android.content.Intent.ACTION_SEND);
-			myIntent.setType("text/plain");
-			myIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.menu_feedback_subject));
-			myIntent.putExtra(Intent.EXTRA_EMAIL, new String [] { getString(R.string.menu_feedback_address) });
-			startActivity(Intent.createChooser(myIntent, getResources().getString(R.string.feedback_chooser_title)));
-			return true;
-		case R.id.menu_share:
-			Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.menu_share_subject));
-			shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.menu_share_url));// TODO: fkt. das?
-			startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.feedback_chooser_title)));
-			return true;
+
 		case android.R.id.home:
-			Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+			Intent intent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
 			MyApplication.showRunningTimers = true;
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 					| Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -284,7 +261,7 @@ public class CategoriesFragment extends ListFragment implements LoaderManager.Lo
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == SELECT_IMAGE)
-		    if (resultCode == Activity.RESULT_OK) {
+		    if (resultCode == AppCompatActivity.RESULT_OK) {
 		      imageUri = data.getData();
 		    } 
 	}

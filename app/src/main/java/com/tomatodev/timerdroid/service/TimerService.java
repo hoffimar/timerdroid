@@ -19,11 +19,10 @@ import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.widget.RemoteViews;
 
 import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
-import com.tomatodev.timerdroid.activities.MainActivity;
+import com.tomatodev.timerdroid.activities.HomeActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -173,10 +172,10 @@ public class TimerService extends Service {
     }
 
     private PendingIntent getIntentStartingApp() {
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, HomeActivity.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addParentStack(HomeActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
@@ -189,7 +188,7 @@ public class TimerService extends Service {
     private void startMainActivity() {
         // Show application
         MyApplication.showRunningTimers = true;
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = new Intent(getApplicationContext(), HomeActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
                 | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         getApplication().startActivity(i);
