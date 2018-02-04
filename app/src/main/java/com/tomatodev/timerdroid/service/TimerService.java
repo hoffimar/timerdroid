@@ -24,6 +24,7 @@ import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.activities.HomeActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,8 @@ public class TimerService extends Service {
 	private static final int NOTIFICATION_TYPE_STOPPED = 1;
 	private static final int NOTIFICATION_TYPE_CANCELLED = 2;
 
+	private ArrayList<ITimerUpdatedHandler> listeners = new ArrayList<>();
+
 	private NotificationManager mNotificationManager;
 	private PowerManager.WakeLock wl;
 
@@ -48,7 +51,6 @@ public class TimerService extends Service {
 		public TimerService getService() {
 			return TimerService.this;
 		}
-
 	}
 
 	private final LocalBinder binder = new LocalBinder();
@@ -194,6 +196,16 @@ public class TimerService extends Service {
         getApplication().startActivity(i);
     }
 
+    public void registerListener(ITimerUpdatedHandler handler){
+	    if (!this.listeners.contains(handler)) {
+            this.listeners.add(handler);
+        }
+    }
+
+    public void deregisterListener(ITimerUpdatedHandler handler){
+        this.listeners.remove(handler);
+    }
+
     public void stopSound() {
 		mNotificationManager.cancel(NOTIFICATION_ID_SOUND);
 	}
@@ -231,13 +243,20 @@ public class TimerService extends Service {
 			timers.put(lastId, counter);
 			lastId++;
 
+			this.notifyListeners();
+
 			createNotification(getString(R.string.service_timer_label) + " " + name + " "
 					+ getString(R.string.service_started_label), NOTIFICATION_TYPE_STARTED);
 		}
 
 		return lastId - 1;
+	}
 
-	}	
+	private void notifyListeners(){
+        for (ITimerUpdatedHandler listener : this.listeners){
+            listener.onTimersChanged();
+        }
+    }
 
 	public void deleteTimer(Integer id) {
 		if (timers.get(id).isStarted()) {
@@ -257,7 +276,6 @@ public class TimerService extends Service {
 		timers.get(id).cancel();
 		createNotification(getString(R.string.service_timer_label) + " " + timers.get(id).getName()
 				+ " " + getString(R.string.service_stopped_label), NOTIFICATION_TYPE_CANCELLED);
-
 	}
 
 	public void pauseTimer(Integer id) {

@@ -26,18 +26,18 @@ import com.tomatodev.timerdroid.service.TimerService.LocalBinder;
 
 public class TimerCursorAdapter extends CursorAdapter {
 
-	private LocalBinder localBinder;
+	private LocalBinder mLocalBinder;
 
 	private FragmentManager fm;
 	
 	public TimerCursorAdapter(Context context, Cursor c, FragmentManager fm, LocalBinder binder) {
 		super(context, c, true);
 		this.fm = fm;
-		this.localBinder = binder;
+		this.mLocalBinder = binder;
 	}
 	
 	public void setLocalBinder(LocalBinder binder) {
-		this.localBinder = binder;
+		this.mLocalBinder = binder;
 	}
 
 	public void bindView(final View view, final Context context, Cursor cursor) {
@@ -80,7 +80,7 @@ public class TimerCursorAdapter extends CursorAdapter {
 							case R.id.popup_timer_run_repeated:
 								FragmentTransaction ft = fm.beginTransaction();
 							    ft.addToBackStack(null);
-							    RepeatTimerFragment newCategoryFragment = new RepeatTimerFragment(localBinder, timerName, timerTime);
+							    RepeatTimerFragment newCategoryFragment = new RepeatTimerFragment(mLocalBinder, timerName, timerTime);
 							    newCategoryFragment.show(ft, "dialog");
 								return true;
 							default:
@@ -100,7 +100,7 @@ public class TimerCursorAdapter extends CursorAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				localBinder.getService().startTimer(timerName, timerTime);
+				mLocalBinder.getService().startTimer(timerName, timerTime);
 				Fragment timerListFragment = fm.findFragmentById(R.id.fragment_timer_list);
 				if (timerListFragment != null) {
 					MyApplication.showRunningTimers = true;
@@ -109,7 +109,7 @@ public class TimerCursorAdapter extends CursorAdapter {
 				} else {
 					RunningTimersFragment runningFragment = (RunningTimersFragment) fm.findFragmentByTag("running");
 					if (runningFragment != null) {
-						runningFragment.refreshTimerList();
+						runningFragment.refreshRunningTimersList();
 					}
 				}
 			}

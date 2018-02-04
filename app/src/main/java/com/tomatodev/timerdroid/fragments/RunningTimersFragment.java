@@ -1,6 +1,5 @@
 package com.tomatodev.timerdroid.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.ComponentName;
@@ -39,6 +38,7 @@ import com.tomatodev.timerdroid.Utilities;
 import com.tomatodev.timerdroid.activities.TimerActivity;
 import com.tomatodev.timerdroid.persistence.TimersProvider;
 import com.tomatodev.timerdroid.service.AbstractCountDown;
+import com.tomatodev.timerdroid.service.ITimerUpdatedHandler;
 import com.tomatodev.timerdroid.service.TimerService;
 import com.tomatodev.timerdroid.service.TimerService.CountDown;
 import com.tomatodev.timerdroid.service.TimerService.LocalBinder;
@@ -49,9 +49,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RunningTimersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class RunningTimersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ITimerUpdatedHandler{
 
-	private LocalBinder localBinder;
+	private LocalBinder mLocalBinder;
 
 	private TimerCursorAdapter items;
 
@@ -71,41 +71,24 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 
 		this.setHasOptionsMenu(true);
 
-		tvNoRunningTimers = (TextView) getActivity().findViewById(R.id.main_textview_running);
-
-		// Bind to timer service
-		Intent intent = new Intent(getActivity(), TimerService.class);
-		ServiceConnection serviceConnection = new ServiceConnection() {
-
-			@Override
-			public void onServiceDisconnected(ComponentName name) {
-				localBinder = null;
-
-			}
-
-			@Override
-			public void onServiceConnected(ComponentName name, IBinder service) {
-				clearRunningTimers();
-				fillTimerTable(service);
-
-			}
-		};
-		boolean success = getActivity().getApplicationContext().bindService(intent, serviceConnection,
-				Service.BIND_AUTO_CREATE);
-		if (!success) {
-			// TODO: do something
-		}
+		tvNoRunningTimers = getActivity().findViewById(R.id.main_textview_running);
 
 		MyApplication.mainVisible = true;
-
-		fillFavorites();
 	}
 
-	@Override
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mLocalBinder != null){
+            mLocalBinder.getService().deregisterListener(this);
+        }
+    }
+
+    @Override
 	public void onResume() {
 		super.onResume();
-		if (localBinder != null)
-			refreshTimerList();
+
+		this.bindTimerService();
 	}
 
 	@Override
@@ -131,10 +114,34 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 		return inflater.inflate(R.layout.running_timers, container, false);
 	}
 
-	public void fillTimerTable(IBinder service) {
-		localBinder = (LocalBinder) service;
+	private void bindTimerService(){
+        Intent intent = new Intent(getActivity(), TimerService.class);
+        ServiceConnection serviceConnection = new ServiceConnection() {
 
-		Map<Integer, CountDown> timersUnsorted = localBinder.getService().getTimers();
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mLocalBinder = null;
+                mLocalBinder.getService().deregisterListener(RunningTimersFragment.this);
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                mLocalBinder = (LocalBinder) service;
+                mLocalBinder.getService().registerListener(RunningTimersFragment.this);
+
+                refreshRunningTimersList();
+                fillFavorites();
+            }
+        };
+        boolean success = getActivity().getApplicationContext().bindService(intent, serviceConnection,
+                Service.BIND_AUTO_CREATE);
+        if (!success) {
+            // TODO: do something
+        }
+    }
+
+	public void fillRunningTimersTable() {
+		Map<Integer, CountDown> timersUnsorted = mLocalBinder.getService().getTimers();
 
 		// not yet sorted :-(
 		TreeMap<Integer, CountDown> timers = new TreeMap<Integer, CountDown>(timersUnsorted);
@@ -178,7 +185,7 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 
 				@Override
 				public void onClick(View v) {
-					localBinder.getService().stopSound();
+					mLocalBinder.getService().stopSound();
 					// numberRunning = number;
 					// rowNumberRunning = rowNumber;
 					// length = originalTime;
@@ -219,10 +226,10 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 								switch (item.getItemId()) {
 								case R.id.popup_timer_delete:
 
-									localBinder.getService().stopSound();
+									mLocalBinder.getService().stopSound();
 
 									// Show confirmation dialog if timer is running
-									if (localBinder.getService().isStarted(number)) {
+									if (mLocalBinder.getService().isStarted(number)) {
 										AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 										builder.setMessage(
 												getString(R.string.main_deletedialog_title_1) + " " + counters.get(number).getName()
@@ -231,7 +238,7 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 												.setPositiveButton(getString(R.string.main_deletedialog_yes),
 														new DialogInterface.OnClickListener() {
 															public void onClick(DialogInterface dialog, int id) {
-																localBinder.getService().deleteTimer(number);
+																mLocalBinder.getService().deleteTimer(number);
 
 																counters.get(number).cancel();
 																counters.remove(number);
@@ -255,7 +262,7 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 										AlertDialog alert = builder.create();
 										alert.show();
 									} else {
-										localBinder.getService().deleteTimer(number);
+										mLocalBinder.getService().deleteTimer(number);
 										counters.get(number).cancel();
 										counters.remove(number);
 
@@ -316,10 +323,10 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 				@Override
 				public void onClick(View v) {
 
-					localBinder.getService().stopSound();
+					mLocalBinder.getService().stopSound();
 
 					// Show confirmation dialog if timer is running
-					if (localBinder.getService().isStarted(number)) {
+					if (mLocalBinder.getService().isStarted(number)) {
 						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 						builder.setMessage(
 								getString(R.string.main_deletedialog_title_1) + " " + counters.get(number).getName()
@@ -328,7 +335,7 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 								.setPositiveButton(getString(R.string.main_deletedialog_yes),
 										new DialogInterface.OnClickListener() {
 											public void onClick(DialogInterface dialog, int id) {
-												localBinder.getService().deleteTimer(number);
+												mLocalBinder.getService().deleteTimer(number);
 
 												counters.get(number).cancel();
 												counters.remove(number);
@@ -352,7 +359,7 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 						AlertDialog alert = builder.create();
 						alert.show();
 					} else {
-						localBinder.getService().deleteTimer(number);
+						mLocalBinder.getService().deleteTimer(number);
 						counters.get(number).cancel();
 						counters.remove(number);
 
@@ -371,30 +378,10 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 	}
 
 	private void fillFavorites() {
-		Intent intent = new Intent(this.getActivity(), TimerService.class);
-		ServiceConnection serviceConnection = new ServiceConnection() {
+		getLoaderManager().restartLoader(0, null, this);
+		items = new TimerCursorAdapter(this.getActivity(), null, getFragmentManager(), mLocalBinder);
 
-			@Override
-			public void onServiceDisconnected(ComponentName name) {
-				localBinder = null;
-			}
-
-			@Override
-			public void onServiceConnected(ComponentName name, IBinder service) {
-				localBinder = (LocalBinder) service;
-				items.setLocalBinder(localBinder);
-
-			}
-		};
-		boolean success = getActivity().getApplicationContext().bindService(intent, serviceConnection,
-				Activity.BIND_AUTO_CREATE);
-
-		// categoryId = getArguments().getInt("category_id", 1);
-
-		getLoaderManager().initLoader(0, null, this);
-		items = new TimerCursorAdapter(this.getActivity(), null, getFragmentManager(), localBinder);
-
-		ListView lv = (ListView) getActivity().findViewById(R.id.main_list_favorites);
+		ListView lv = getActivity().findViewById(R.id.main_list_favorites);
 		lv.setAdapter(items);
 	}
 
@@ -412,9 +399,9 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 		views.clear();
 	}
 
-	public void refreshTimerList() {
+	public void refreshRunningTimersList() {
 		clearRunningTimers();
-		fillTimerTable(localBinder);
+		fillRunningTimersTable();
 	}
 
 	static final String[] PROJECTION = new String[] { TimersProvider.TimerTable._ID,
@@ -438,7 +425,12 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 		items.swapCursor(null);
     }
 
-	public class MyCount extends AbstractCountDown {
+    @Override
+    public void onTimersChanged() {
+        this.refreshRunningTimersList();
+    }
+
+    public class MyCount extends AbstractCountDown {
 
 		private int textViewId;
 
@@ -477,7 +469,5 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 				Log.e(Constants.LOG_TAG, "onTick: textview is null");
 			}
 		}
-
 	}
-
 }
