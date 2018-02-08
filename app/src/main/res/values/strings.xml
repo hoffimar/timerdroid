@@ -36,6 +36,7 @@
     <string name="cr_timer_custom">Timer</string>
     <string name="cr_timer_category">Category</string>
     <string name="cr_timer_favorite">Favorite</string>
+    <string name="cr_timer_edit_title">Edit Timer</string>
 
     <string name="prefs_activity_title">Settings</string>
     <string name="prefs_title_alarms">Alarms</string>

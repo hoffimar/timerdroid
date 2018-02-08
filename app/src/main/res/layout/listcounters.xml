@@ -6,7 +6,7 @@
     
     <TextView
         android:id="@+id/listcounters_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="left|center_vertical"
         android:layout_weight="1.0"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@null"
-        android:src="@drawable/ic_arrow_drop_down_black_24dp" >
+        android:src="@drawable/dropdown_button" >
     </ImageButton>
 
     <TextView
@@ -30,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
+        android:minWidth="90dp"
         android:gravity="right"
         android:padding="5sp"
         android:text=""
@@ -43,7 +44,7 @@
         android:layout_gravity="right|center_vertical"
         android:background="@null"
         android:src="@drawable/play"
-        android:tint="#a8c24e" >
+        android:tint="#5cc0b1" >
     </ImageButton>
 
 </LinearLayout>

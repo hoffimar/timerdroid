@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -114,21 +115,20 @@ public class TimerFragment extends Fragment {
 
 		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		categorySpinner.setAdapter(mAdapter);
-		
-		
-		int timerId = getActivity().getIntent().getIntExtra("timerId", -1);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        int timerId = getActivity().getIntent().getIntExtra("timerId", -1);
 		if (timerId != -1) {
 			showTimer(timerId);
+            actionBar.setTitle(R.string.cr_timer_edit_title);
 		} else {
 			int categoryId = getActivity().getIntent().getIntExtra("categoryId", -1);
 			if (categoryId != -1) {
 				adjustCategorySpinner(categoryId);
 			}
+            actionBar.setTitle(R.string.menu_new_timer);
 		}
-
 	}
-
-	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

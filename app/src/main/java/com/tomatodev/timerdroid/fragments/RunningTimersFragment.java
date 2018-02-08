@@ -446,14 +446,15 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 				textView.setText(Utilities.formatTime(0));
 				((TextView) textView).setTextColor(0xffff0000);
 
-				timersTable.removeAllViews();
-				mappingCountersToRows.clear();
+				// TODO remove if not needed anymore
+//				timersTable.removeAllViews();
+//				mappingCountersToRows.clear();
 
-				for (MyCount counter : counters.values()) {
-					counter.cancel();
-				}
-				counters.clear();
-				views.clear();
+//				for (MyCount counter : counters.values()) {
+//					counter.cancel();
+//				}
+//				counters.clear();
+//				views.clear();
 
 			} else {
 				Log.e(Constants.LOG_TAG, "onFinish: textview is null");

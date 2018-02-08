@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
         android:id="@+id/menu_start_timer"
         android:icon="@drawable/play"
-        android:showAsAction="ifRoom|withText"
-        android:title="Start"/>
+        android:title="@string/create_timer_start"
+        app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/menu_save_timer"
         android:icon="@drawable/accept"
-        android:showAsAction="ifRoom|withText"
-        android:title="Save" />
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/create_timer_save" />
 
 </menu>

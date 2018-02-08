@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
         android:id="@+id/menu_add_timer"
         android:icon="@drawable/ic_action_add"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/menu_new_timer"/>
+        android:title="@string/menu_new_timer"
+        app:showAsAction="ifRoom" />
     
     <item
         android:id="@+id/menu_run_category"
         android:icon="@android:drawable/ic_menu_slideshow"
-        android:showAsAction="withText"
-        android:title="@string/categories_action_run_in_queue"/>
+        android:title="@string/categories_action_run_in_queue"
+        app:showAsAction="withText" />
 
 </menu>
