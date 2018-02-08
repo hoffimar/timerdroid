@@ -1,28 +1,15 @@
 package com.tomatodev.timerdroid.service;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 
-import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
-import com.tomatodev.timerdroid.activities.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,20 +18,12 @@ import java.util.Map;
 
 public class TimerService extends Service {
 
-	private static final int SOUND_STREAM = AudioManager.STREAM_ALARM;
-	private Map<Integer, CountDown> timers = new HashMap<Integer, CountDown>();
+	private Map<Integer, CountDown> timers = new HashMap<>();
 	private static Integer lastId = 0;
-	private static final int NOTIFICATION_ID = 1;
-	private static final int NOTIFICATION_ID_SOUND = 2;
-	private static final int NOTIFICATION_ID_FOREGROUND = 3;
-
-	private static final int NOTIFICATION_TYPE_STARTED = 0;
-	private static final int NOTIFICATION_TYPE_STOPPED = 1;
-	private static final int NOTIFICATION_TYPE_CANCELLED = 2;
 
 	private ArrayList<ITimerUpdatedHandler> listeners = new ArrayList<>();
 
-	private NotificationManager mNotificationManager;
+	private CustomNotificationManager mNotificationManager;
 	private PowerManager.WakeLock wl;
 
 	public class LocalBinder extends Binder {
@@ -57,144 +36,9 @@ public class TimerService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		setupNotification();
+		this.mNotificationManager = new CustomNotificationManager(this);
 		return binder;
 	}
-
-	private void setupNotification() {
-		String ns = Context.NOTIFICATION_SERVICE;
-		mNotificationManager = (NotificationManager) getSystemService(ns);
-	}
-
-	private void createNotification(String tickerText, int type) {
-		Context context = getApplicationContext();
-		StringBuffer text = new StringBuffer("");
-		text.append(getString(R.string.service_running_timers) + ": ");
-		boolean timerRunning = false;
-        int numberOfRunningTimers = 0;
-        long minimumTimeleft = Long.MAX_VALUE;
-
-		for (CountDown countdown : timers.values()) {
-			if (countdown.isStarted()) {
-				text.append(countdown.getName() + ", ");
-				timerRunning = true;
-                numberOfRunningTimers++;
-                if (countdown.getTimeLeft() < minimumTimeleft) {
-                    minimumTimeleft = countdown.getTimeLeft();
-                }
-			}
-		}
-		if (!timerRunning) {
-			text = new StringBuffer(getString(R.string.service_no_running_timers));
-		} else {
-			// delete the unnecessary ',' at the end
-			text.delete(text.length() - 2, text.length() - 1);
-		}
-		CharSequence contentTitle = getString(R.string.app_name);
-        PendingIntent contentIntent = getIntentStartingApp();
-
-        Bitmap iconTimer = BitmapFactory.decodeResource(context.getResources(),
-                R.drawable.timer);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(text)
-                .setSmallIcon(R.drawable.ic_stat_action_schedule) // Needed to not get generic Android notification
-                .setLargeIcon(iconTimer)
-                .setFullScreenIntent(contentIntent, false)
-                .setContentIntent(contentIntent)
-                .setNumber(numberOfRunningTimers)
-                .setWhen(System.currentTimeMillis() + minimumTimeleft)
-                .setOngoing(true);
-
-        Notification notification = notificationBuilder.build();//getNotification();// build() only working with API level >= 16
-
-        if (type == NOTIFICATION_TYPE_STOPPED) {
-			startSoundNotification(tickerText);
-		}
-
-		if (type == NOTIFICATION_TYPE_STARTED || timerRunning) {
-			startForeground(NOTIFICATION_ID_FOREGROUND, notification);
-		} else {
-			stopForeground(true);
-		}
-
-	}
-
-    private void startSoundNotification(String text) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        Bitmap iconTimer = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                R.drawable.timer);
-
-        String ringtone = prefs.getString("ringtone", "");
-        Uri soundUri = ringtone.equals("") ? RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM) : Uri.parse(ringtone);
-
-        PendingIntent contentIntent = getIntentStartingApp();
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(text)
-                .setSmallIcon(R.drawable.ic_stat_action_schedule) // Needed to not get generic Android notification (at least for service startForeground
-                .setLargeIcon(iconTimer)
-                .setLights(Color.RED, 200, 600)
-                .setFullScreenIntent(contentIntent, false)
-                .setContentIntent(contentIntent)
-                .setSound(soundUri, SOUND_STREAM);
-
-        // Currently not needed since sound stops when pulling down the notification twice
-//        NotificationCompat.Action action = new NotificationCompat.Action.Builder(android.R.drawable.ic_delete, "Delete", contentIntent).build();
-//        notificationBuilder.addAction(action);
-
-        Notification notificationSound = notificationBuilder.build();
-
-        // TODO what about this insistent preference, can it be done another way?
-        if (prefs.getBoolean("insistent_alarm", true)) {
-            notificationSound.flags |= Notification.FLAG_INSISTENT;
-        }
-
-        // If device is set to silent mode by user, overwrite it
-        AudioManager audio = (AudioManager) getApplicationContext().getSystemService(
-                Context.AUDIO_SERVICE);
-        int currentVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
-        int currentRingerMode = audio.getRingerMode();
-        int max = audio.getStreamMaxVolume(SOUND_STREAM);
-
-        audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        int volume = (int) Math.round(prefs.getInt("alarm_volume", 5) * 0.1 * max);
-        audio.setStreamVolume(SOUND_STREAM, volume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-
-        mNotificationManager.notify(NOTIFICATION_ID_SOUND, notificationSound);
-
-        // reset volume and ringer mode
-        audio.setRingerMode(currentRingerMode);
-        audio.setStreamVolume(AudioManager.STREAM_RING, currentVolume, 0);
-
-//        startMainActivity();
-    }
-
-    private PendingIntent getIntentStartingApp() {
-        Intent resultIntent = new Intent(this, HomeActivity.class);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(HomeActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        return resultPendingIntent;
-    }
-
-    private void startMainActivity() {
-        // Show application
-        MyApplication.showRunningTimers = true;
-        Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        getApplication().startActivity(i);
-    }
 
     public void registerListener(ITimerUpdatedHandler handler){
 	    if (!this.listeners.contains(handler)) {
@@ -207,7 +51,7 @@ public class TimerService extends Service {
     }
 
     public void stopSound() {
-		mNotificationManager.cancel(NOTIFICATION_ID_SOUND);
+		mNotificationManager.cancelSoundNotification();
 	}
 
 	public long getTimeLeft(Integer id) {
@@ -233,7 +77,6 @@ public class TimerService extends Service {
 				wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
 			}
 			wl.acquire();
-
 		}
 
 		synchronized (lastId) {
@@ -245,8 +88,8 @@ public class TimerService extends Service {
 
 			this.notifyListeners();
 
-			createNotification(getString(R.string.service_timer_label) + " " + name + " "
-					+ getString(R.string.service_started_label), NOTIFICATION_TYPE_STARTED);
+//            mNotificationManager.startNotificationForStartedTimer(name);
+			startForeground(100, mNotificationManager.getNotificationForService(timers.values()));
 		}
 
 		return lastId - 1;
@@ -266,17 +109,30 @@ public class TimerService extends Service {
 
 		if (timers.isEmpty()) {
 			wl.release();
-			mNotificationManager.cancel(NOTIFICATION_ID);
-			this.stopSelf();
+			mNotificationManager.cancelTextNotification();
+            if (!isTimerRunning()){
+                stopForeground(true);
+            }
 		}
 	}
 	
 	private void stopTimer(Integer id) {
 		timers.get(id).setStarted(false);
 		timers.get(id).cancel();
-		createNotification(getString(R.string.service_timer_label) + " " + timers.get(id).getName()
-				+ " " + getString(R.string.service_stopped_label), NOTIFICATION_TYPE_CANCELLED);
+		mNotificationManager.startNotificationForCancelledTimer(timers.get(id).getName());
+		if (!isTimerRunning()){
+		    stopForeground(true);
+        }
 	}
+
+	private boolean isTimerRunning(){
+        for (TimerService.CountDown countdown : timers.values()) {
+            if (countdown.isStarted()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	public void pauseTimer(Integer id) {
 		// TODO
@@ -307,14 +163,10 @@ public class TimerService extends Service {
 		public CountDown(long millisInFuture, long countDownInterval, String name) {
 			super(millisInFuture, countDownInterval, name);
 		}
-		
-		
 
 		public CountDown(long millisInFuture, long countDownInterval, String name, List<TimerDescription> queue) {
 			super(millisInFuture, countDownInterval, name, queue);
 		}
-
-
 
 		public void onFinish() {
 			started = false;
@@ -325,10 +177,11 @@ public class TimerService extends Service {
 				queue.remove(0);
 				startTimer(nameNewTimer, timeNewTimer, queue);
 			}
-			
-			createNotification(getString(R.string.service_timer_label) + " " + name + " "
-					+ getString(R.string.service_finished_label), NOTIFICATION_TYPE_STOPPED);
-			
+
+			mNotificationManager.startNotificationForFinishedTimer(name);
+            if (!isTimerRunning()){
+                stopForeground(true);
+            }
 		}
 
 		public void onTick(long millisUntilFinished) {
@@ -341,5 +194,4 @@ public class TimerService extends Service {
 			return (int) (this.timeLeft - another.timeLeft);
 		}
 	}
-
 }
