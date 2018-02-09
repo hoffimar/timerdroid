@@ -34,7 +34,7 @@ public class RepeatTimerFragment extends DialogFragment {
 		this.timerTime = timerTime;
 	}
 
-	@Override
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		getDialog().setTitle(R.string.list_timers_repeat_title);
 

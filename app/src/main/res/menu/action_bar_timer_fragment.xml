@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/menu_start_timer"
-        android:icon="@drawable/play"
+        android:icon="@drawable/ic_play_circle_outline_24dp"
         android:title="@string/create_timer_start"
         app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/menu_save_timer"
-        android:icon="@drawable/accept"
+        android:icon="@drawable/ic_save_black_24dp"
         app:showAsAction="ifRoom|withText"
         android:title="@string/create_timer_save" />
 

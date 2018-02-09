@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.tomatodev.timerdroid.R;
 
@@ -28,6 +30,9 @@ public class AboutDialogFragment extends DialogFragment {
 		Context mContext = getActivity();
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.about_dialog, (ViewGroup) getActivity().findViewById(R.id.main_layout));
+
+		TextView tv = layout.findViewById(R.id.websiteTextView);
+		tv.setMovementMethod(LinkMovementMethod.getInstance());
 
 		builder = new AlertDialog.Builder(mContext);
 		builder.setView(layout);

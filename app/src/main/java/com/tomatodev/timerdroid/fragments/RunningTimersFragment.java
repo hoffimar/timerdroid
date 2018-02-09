@@ -16,8 +16,6 @@ import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +33,6 @@ import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.TimerCursorAdapter;
 import com.tomatodev.timerdroid.Utilities;
-import com.tomatodev.timerdroid.activities.TimerActivity;
 import com.tomatodev.timerdroid.persistence.TimersProvider;
 import com.tomatodev.timerdroid.service.AbstractCountDown;
 import com.tomatodev.timerdroid.service.ITimerUpdatedHandler;
@@ -89,24 +86,6 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 		super.onResume();
 
 		this.bindTimerService();
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.action_bar_running_timers, menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_add_timer:
-			Intent i = new Intent(getActivity(), TimerActivity.class);
-			startActivity(i);
-			return true;
-		default:
-			break;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -206,7 +185,7 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 
 			tvName.setPadding(3, 3, 3, 3);
 			// tvName.setTextSize(20);
-			tvName.setTextSize(19);
+			tvName.setTextSize(18);
 			// tvName.setTextAppearance(getApplicationContext(),
 			// android.R.style.TextAppearance_Medium);
 			tvName.setSingleLine(true);
@@ -298,7 +277,7 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 				tvName.setTextColor(0xffff0000);
 			}
 			// tvTime.setTextSize(20);
-			tvTime.setTextSize(16);
+			tvTime.setTextSize(18);
 			row.addView(tvTime);
 			tvTime.setPadding(3, 3, 3, 3);
 			tvTime.setGravity(Gravity.RIGHT);

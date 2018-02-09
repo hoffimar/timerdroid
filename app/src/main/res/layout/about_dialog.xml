@@ -55,16 +55,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/about_url_label" />
+            android:paddingRight="10dp" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/websiteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoLink="web"
             android:paddingRight="10dp"
-            android:text="@string/about_url" />
+            android:text="@string/about_link"/>
     </TableRow>
 
 </TableLayout>

@@ -15,14 +15,13 @@
 	<string name="about_author">Martin Hoffmann</string>
 	<string name="about_version_label">Version</string>
 	<string name="about_version">2.1.3</string>
-	<string name="about_url_label">Webseite</string>
-	<string name="about_url">\s"https://github.com/hoffimar/timerdroid"</string>
 	<string name="menu_about_button_text">OK</string>
 	<string name="menu_feedback">Feedback</string>
 	<string name="feedback_chooser_title">Wähle App</string>
 	<string name="menu_feedback_subject">Feedback Timerdroid</string>
 	<string name="menu_feedback_address">tomatodevs@googlemail.com</string>
 	<string name="menu_share">Weiterleiten</string>
+    <string name="about_link"><a href="https://github.com/hoffimar/timerdroid">Webseite</a></string>
 	<string name="menu_share_url">https://market.android.com/details?id=com.tomatodev.timerdroid</string>
 	<string name="menu_share_subject">Android Timer App</string>
 	
@@ -98,5 +97,5 @@
 	<string name="no_timers_in_this_category">Keine Timer in dieser Kategorie</string>
 	
 	<string name="popup_timer_stop">Stop</string>
-    <string name="home">Home</string>
+
 </resources>

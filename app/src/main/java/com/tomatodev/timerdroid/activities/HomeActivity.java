@@ -2,11 +2,13 @@ package com.tomatodev.timerdroid.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.fragments.AboutDialogFragment;
 import com.tomatodev.timerdroid.fragments.CategoriesFragment;
+import com.tomatodev.timerdroid.fragments.NewCategoryDialogFragment;
 import com.tomatodev.timerdroid.fragments.RunningTimersFragment;
 
 public class HomeActivity extends AppCompatActivity {
@@ -54,6 +57,22 @@ public class HomeActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v -> {
+            switch (mViewPager.getCurrentItem()){
+                case 0:
+                    Intent i = new Intent(this, TimerActivity.class);
+                    startActivity(i);
+                    break;
+                case 1:
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.addToBackStack(null);
+                    NewCategoryDialogFragment newCategoryFragment = new NewCategoryDialogFragment();
+                    newCategoryFragment.show(ft, "dialog");
+                    break;
+            }
+        });
     }
 
     @Override

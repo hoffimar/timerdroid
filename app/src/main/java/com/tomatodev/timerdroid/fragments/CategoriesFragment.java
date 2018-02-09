@@ -9,15 +9,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -26,9 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.tomatodev.timerdroid.CategoriesCursorAdapter;
-import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
-import com.tomatodev.timerdroid.activities.HomeActivity;
 import com.tomatodev.timerdroid.activities.ListTimersActivity;
 import com.tomatodev.timerdroid.persistence.CategoriesProvider;
 import com.tomatodev.timerdroid.persistence.CategoriesProvider.CategoriesTable;
@@ -45,15 +39,12 @@ public class CategoriesFragment extends ListFragment implements LoaderManager.Lo
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		
-//		getActivity().getActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		fillData();
-
 	}
 
 	private void fillData() {
@@ -223,38 +214,7 @@ public class CategoriesFragment extends ListFragment implements LoaderManager.Lo
 				});
 				return dialog;
 			}
-
 		});
-
-	}
-	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.action_bar_categories, menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_add_category:
-			FragmentTransaction ft = getFragmentManager().beginTransaction();
-		    ft.addToBackStack(null);
-		    NewCategoryDialogFragment newCategoryFragment = new NewCategoryDialogFragment();
-		    newCategoryFragment.show(ft, "dialog");
-			return true;
-
-		case android.R.id.home:
-			Intent intent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
-			MyApplication.showRunningTimers = true;
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-					| Intent.FLAG_ACTIVITY_SINGLE_TOP
-					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			getActivity().getApplication().startActivity(intent);
-			return true;
-		default:
-			break;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override

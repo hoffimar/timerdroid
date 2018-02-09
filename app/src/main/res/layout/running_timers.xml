@@ -2,35 +2,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
-    
-    <TextView android:text="@string/running_timers" android:id="@+id/main_textview_running_timers"
-		android:background="#000000" android:textColor="#ffffff"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:gravity="center"/>
+    android:orientation="vertical">
 
-	<TextView android:text="@string/no_timers_running" android:id="@+id/main_textview_running"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#fff"
-		android:padding="8sp"/>
+    <TextView
+        android:id="@+id/main_textview_running_timers"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:gravity="center"
+        android:text="@string/running_timers"
+        android:textColor="#ffffff" />
 
-	<ScrollView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:paddingBottom="5sp">
-		<TableLayout android:id="@+id/main_timers_table"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:gravity="fill_horizontal" android:stretchColumns="1"
-			android:shrinkColumns="0" android:paddingLeft="4sp"
-			android:paddingRight="4sp">
-		</TableLayout>
-	</ScrollView>
-    
-    <TextView android:text="@string/list_timers_title_favorites" android:id="@+id/main_textview_favorites"
-		android:background="#000000" android:textColor="#ffffff"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:gravity="center"/>
+    <TextView
+        android:id="@+id/main_textview_running"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8sp"
+        android:text="@string/no_timers_running"
+        android:textColor="#fff" />
 
-	<ListView android:layout_height="0dip" android:id="@+id/main_list_favorites"
-		android:layout_width="fill_parent" android:layout_gravity="bottom"
-		android:layout_weight="1.0"/>
-	
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5sp">
+
+        <TableLayout
+            android:id="@+id/main_timers_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="fill_horizontal"
+            android:paddingLeft="4sp"
+            android:paddingRight="4sp"
+            android:shrinkColumns="0"
+            android:stretchColumns="1"/>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/main_textview_favorites"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:gravity="center"
+        android:text="@string/list_timers_title_favorites"
+        android:textColor="#ffffff" />
+
+    <ListView
+        android:id="@+id/main_list_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="115dp" />
+
 </LinearLayout>

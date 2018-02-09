@@ -7,19 +7,22 @@
         android:orderInCategory="50"
         android:title="@string/main_preferences"
         android:icon="@drawable/ic_action_settings"
-        app:showAsAction="always" />
+        app:showAsAction="withText" />
     <item
         android:id="@+id/menu_about"
+        android:orderInCategory="90"
         android:icon="@android:drawable/ic_menu_info_details"
         app:showAsAction="withText"
         android:title="@string/menu_about" />
     <item
         android:id="@+id/menu_feedback"
+        android:orderInCategory="60"
         android:icon="@android:drawable/ic_menu_edit"
         app:showAsAction="withText"
         android:title="@string/menu_feedback" />
     <item
         android:id="@+id/menu_share"
+        android:orderInCategory="70"
         android:icon="@android:drawable/ic_menu_share"
         app:showAsAction="withText"
         android:title="@string/menu_share"/>

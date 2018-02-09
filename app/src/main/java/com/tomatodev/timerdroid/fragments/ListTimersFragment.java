@@ -19,7 +19,6 @@ import com.tomatodev.timerdroid.MyApplication;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.TimerCursorAdapter;
 import com.tomatodev.timerdroid.activities.HomeActivity;
-import com.tomatodev.timerdroid.activities.TimerActivity;
 import com.tomatodev.timerdroid.persistence.TimersProvider;
 import com.tomatodev.timerdroid.service.TimerDescription;
 import com.tomatodev.timerdroid.service.TimerService;
@@ -49,8 +48,6 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 	}
 	
 	private void fillData() {
-		
-		
 		Intent intent = new Intent(this.getActivity(), TimerService.class);
 		ServiceConnection serviceConnection = new ServiceConnection() {
 
@@ -70,12 +67,10 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 				serviceConnection, AppCompatActivity.BIND_AUTO_CREATE);
 		
 		categoryId = getActivity().getIntent().getIntExtra("category_id", 1);
-//		Log.v("bla", "id: " + categoryId);
 		
         getLoaderManager().initLoader(0, null, this);        
 		items = new TimerCursorAdapter(this.getActivity(), null, getFragmentManager(), localBinder);
 		setListAdapter(items);
-		
 	}
 	
 	@Override
@@ -86,13 +81,6 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		
-		case R.id.menu_add_timer:
-			Intent i = new Intent(getActivity(), TimerActivity.class);
-			i.putExtra("categoryId", categoryId);
-			startActivity(i);
-			return true;
-		
 		case R.id.menu_run_category:
 			List<TimerDescription> queue = new ArrayList<TimerDescription>();
 			Cursor cursor = items.getCursor();
@@ -104,7 +92,6 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 				cursor.moveToNext();
 			}
 			try {
-				
 				TimerDescription firstTimer = queue.remove(0);
 				localBinder.getService().startTimer(firstTimer.getName(),
 						firstTimer.getTime(), queue);
@@ -121,15 +108,6 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 			}
 			
 			return true;
-			
-		case android.R.id.home:
-			Intent intent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
-			MyApplication.showRunningTimers = true;
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-					| Intent.FLAG_ACTIVITY_SINGLE_TOP
-					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			getActivity().getApplication().startActivity(intent);
-			return true;
 		default:
 			break;
 		}
@@ -143,7 +121,6 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
         TimersProvider.TimerTable.TIMER_KEY_CATEGORY,
         TimersProvider.TimerTable.TIMER_KEY_FAVORITE,
     };
-
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -160,7 +137,5 @@ public class ListTimersFragment extends ListFragment implements LoaderManager.Lo
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		items.swapCursor(null);
-		
 	}
-
 }
