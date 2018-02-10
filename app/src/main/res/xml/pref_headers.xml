@@ -2,12 +2,12 @@
 
     <header
         android:fragment="com.tomatodev.timerdroid.activities.UserSettingsActivity$NotificationPreferenceFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_notifications_24dp"
         android:title="@string/prefs_title_alarms" />
 
     <header
         android:fragment="com.tomatodev.timerdroid.activities.UserSettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_screen_lock_portrait_black_24dp"
+        android:icon="@drawable/ic_screen_lock_portrait_24dp"
         android:title="@string/prefs_title_screen" />
 
 </preference-headers>

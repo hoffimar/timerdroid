@@ -31,21 +31,26 @@ public class CustomNotificationManager {
 
     private static final int SOUND_STREAM = AudioManager.STREAM_ALARM;
 
-    private static final int NOTIFICATION_ID = 1;
-    private static final int NOTIFICATION_ID_SOUND = 2;
+    // Used for the service notification
+    public static final int NOTIFICATION_ID_RUNNING = 1;
+    public static final int NOTIFICATION_ID_FINISHED = 2;
 
     public static final String NOTIFICATION_CHANNEL_ID_FINISHED = "timerdroid_channel_finished";
-
     public static final String NOTIFICATION_CHANNEL_ID_RUNNING = "timerdroid_channel_running";
 
     private NotificationManager mNotificationManager;
 
     private Context mContext;
+    private final AudioManager mAudioManager;
+    private int mRingerModeBefore = 0;
+    private int mVolumeBefore = 0;
 
     public CustomNotificationManager(Context context) {
         String ns = Context.NOTIFICATION_SERVICE;
         mNotificationManager = (NotificationManager) context.getSystemService(ns);
         mContext = context;
+        mAudioManager = (AudioManager) mContext.getSystemService(
+                Context.AUDIO_SERVICE);
 
         this.createNotificationChannelAlarm();
         this.createNotificationChannelRunning();
@@ -55,19 +60,16 @@ public class CustomNotificationManager {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return;
         }
-        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID_RUNNING);
-        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID_FINISHED);
+//        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID_RUNNING);
+//        mNotificationManager.deleteNotificationChannel(NOTIFICATION_CHANNEL_ID_FINISHED);
 
-        CharSequence name = "Timer Finished"; // TODO
-        String description = "Timer finished";
+        CharSequence name = mContext.getText(R.string.notification_channel_finished_timers_title);
         int importance = NotificationManager.IMPORTANCE_HIGH;
         NotificationChannel mChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID_FINISHED, name, importance);
-        mChannel.setDescription(description);
         mChannel.enableLights(true);
         mChannel.setLightColor(Color.RED);
         mChannel.enableVibration(true);
         mChannel.setShowBadge(true);
-//        mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ALARM)
@@ -81,11 +83,9 @@ public class CustomNotificationManager {
             return;
         }
 
-        CharSequence name = "Timer Running"; // TODO
-        String description = "Timer running";
+        CharSequence name = mContext.getText(R.string.notification_channel_running_timers_title);
         int importance = NotificationManager.IMPORTANCE_LOW;
         NotificationChannel mChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID_RUNNING, name, importance);
-        mChannel.setDescription(description);
         mChannel.enableLights(false);
         mChannel.enableVibration(false);
         mChannel.setShowBadge(false);
@@ -151,7 +151,7 @@ public class CustomNotificationManager {
         return notificationBuilder;
     }
 
-    public Notification createTimerFinishedNotification(String timerName){
+    private Notification createTimerFinishedNotification(String timerName){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         String ringtone = prefs.getString("ringtone", "");
@@ -167,25 +167,6 @@ public class CustomNotificationManager {
         if (prefs.getBoolean("insistent_alarm", true)) {
             notificationSound.flags |= Notification.FLAG_INSISTENT;
         }
-
-        // If device is set to silent mode by user, overwrite it
-//        AudioManager audio = (AudioManager) mContext.getSystemService(
-//                Context.AUDIO_SERVICE);
-//        int currentVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
-//        int currentRingerMode = audio.getRingerMode();
-//        int max = audio.getStreamMaxVolume(SOUND_STREAM);
-//
-//        audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-//        int volume = (int) Math.round(prefs.getInt("alarm_volume", 5) * 0.1 * max);
-//        audio.setStreamVolume(SOUND_STREAM, volume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-
-//        mNotificationManager.notify(NOTIFICATION_ID_SOUND, notificationSound);
-
-        // reset volume and ringer mode
-//        audio.setRingerMode(currentRingerMode);
-//        audio.setStreamVolume(AudioManager.STREAM_RING, currentVolume, 0);
-
-//        startMainActivity();
 
         return notificationSound;
     }
@@ -208,31 +189,35 @@ public class CustomNotificationManager {
         return createRunningTimersNotification(timers);
     }
 
-    public void startNotificationForStartedTimer(String timerName){
-        NotificationCompat.Builder builder = getNotificationBuilder(NOTIFICATION_CHANNEL_ID_RUNNING).setContentText(mContext.getText(R.string.service_timer_label) + ": " +
-                timerName + " " +
-                mContext.getString(R.string.service_started_label));
-
-        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
-    }
-
-    public void startNotificationForCancelledTimer(String timerName){
-        NotificationCompat.Builder builder = getNotificationBuilder(NOTIFICATION_CHANNEL_ID_RUNNING).setContentText(mContext.getText(R.string.service_timer_label) + ": " +
-                timerName + " " +
-                mContext.getString(R.string.service_stopped_label));
-
-        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
+    public void updateRunningTimersNotification(Collection<TimerService.CountDown> timers) {
+        mNotificationManager.notify(NOTIFICATION_ID_RUNNING, createRunningTimersNotification(timers));
     }
 
     public void startNotificationForFinishedTimer(String timerName){
-        mNotificationManager.notify(NOTIFICATION_ID_SOUND, createTimerFinishedNotification(timerName));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        AudioManager audio = (AudioManager) mContext.getSystemService(
+                Context.AUDIO_SERVICE);
+
+        // set alarm volume (API < 26)
+        // TODO problem when 2 alarms go off after each other, will overwrite the system volume
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+            mVolumeBefore = audio.getStreamVolume(SOUND_STREAM);
+            int max = audio.getStreamMaxVolume(SOUND_STREAM);
+            int volume = (int) Math.round(prefs.getInt("alarm_volume", 5) * 0.1 * max);
+            audio.setStreamVolume(AudioManager.STREAM_ALARM, volume, 0);
+            mRingerModeBefore = audio.getRingerMode();
+            audio.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        }
+
+        mNotificationManager.notify(NOTIFICATION_ID_FINISHED, createTimerFinishedNotification(timerName));
     }
 
     public void cancelSoundNotification(){
-        mNotificationManager.cancel(NOTIFICATION_ID_SOUND);
-    }
-
-    public void cancelTextNotification(){
-        mNotificationManager.cancel(NOTIFICATION_ID);
+        // reset alarm volume
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O ){
+            mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, mVolumeBefore, 0);
+            mAudioManager.setRingerMode(mRingerModeBefore);
+        }
+        mNotificationManager.cancel(NOTIFICATION_ID_FINISHED);
     }
 }

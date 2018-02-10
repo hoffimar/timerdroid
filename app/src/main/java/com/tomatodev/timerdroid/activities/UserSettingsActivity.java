@@ -151,6 +151,15 @@ public class UserSettingsActivity extends AppCompatPreferenceActivity {
     public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
 
+        // open application notification settings instead of custom fragment
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent intent = new Intent();
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
+
+            target.get(0).intent = intent;
+            target.get(0).fragment = null;
+        }
     }
 
     /**

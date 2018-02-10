@@ -97,5 +97,8 @@
 	<string name="no_timers_in_this_category">Keine Timer in dieser Kategorie</string>
 	
 	<string name="popup_timer_stop">Stop</string>
+    <string name="cr_timer_edit_title">Timer ändern</string>
+	<string name="notification_channel_running_timers_title">Gestartete Timer</string>
+	<string name="notification_channel_finished_timers_title">Abgelaufene Timer</string>
 
 </resources>

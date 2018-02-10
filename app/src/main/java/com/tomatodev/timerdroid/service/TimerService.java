@@ -89,7 +89,7 @@ public class TimerService extends Service {
 			this.notifyListeners();
 
 //            mNotificationManager.startNotificationForStartedTimer(name);
-			startForeground(100, mNotificationManager.getNotificationForService(timers.values()));
+			startForeground(CustomNotificationManager.NOTIFICATION_ID_RUNNING, mNotificationManager.getNotificationForService(timers.values()));
 		}
 
 		return lastId - 1;
@@ -109,7 +109,8 @@ public class TimerService extends Service {
 
 		if (timers.isEmpty()) {
 			wl.release();
-			mNotificationManager.cancelTextNotification();
+			// TODO not needed since stopForeground does the same
+//			mNotificationManager.cancelTextNotification();
             if (!isTimerRunning()){
                 stopForeground(true);
             }
@@ -119,7 +120,7 @@ public class TimerService extends Service {
 	private void stopTimer(Integer id) {
 		timers.get(id).setStarted(false);
 		timers.get(id).cancel();
-		mNotificationManager.startNotificationForCancelledTimer(timers.get(id).getName());
+		mNotificationManager.updateRunningTimersNotification(timers.values());
 		if (!isTimerRunning()){
 		    stopForeground(true);
         }
@@ -177,7 +178,7 @@ public class TimerService extends Service {
 				queue.remove(0);
 				startTimer(nameNewTimer, timeNewTimer, queue);
 			}
-
+            mNotificationManager.updateRunningTimersNotification(timers.values());
 			mNotificationManager.startNotificationForFinishedTimer(name);
             if (!isTimerRunning()){
                 stopForeground(true);
