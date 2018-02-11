@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.fragments.AboutDialogFragment;
 import com.tomatodev.timerdroid.fragments.CategoriesFragment;
@@ -104,17 +105,20 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(myIntent, getResources().getString(R.string.feedback_chooser_title)));
                 return true;
             case R.id.menu_share:
-                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.menu_share_subject));
-                shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.menu_share_url));// TODO: fkt. das?
-                startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.feedback_chooser_title)));
+                onInviteClicked();
                 return true;
             default:
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onInviteClicked() {
+        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.menu_share))
+                .setMessage(getString(R.string.menu_share_subject))
+                .build();
+        startActivityForResult(intent, 100);
     }
 
     /**
