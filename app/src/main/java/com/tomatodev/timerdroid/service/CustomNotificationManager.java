@@ -139,11 +139,11 @@ public class CustomNotificationManager {
         PendingIntent contentIntent = getIntentStartingApp();
 
         Bitmap iconTimer = BitmapFactory.decodeResource(mContext.getResources(),
-                R.drawable.timer);
+                R.mipmap.ic_app);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext, channelId)
                 .setContentTitle(mContext.getString(R.string.app_name))
-                .setSmallIcon(R.drawable.ic_stat_action_schedule) // Needed to not get generic Android notification
+                .setSmallIcon(R.drawable.ic_stat_timer) // Needed to not get generic Android notification
                 .setLargeIcon(iconTimer)
                 .setFullScreenIntent(contentIntent, false)
                 .setContentIntent(contentIntent);

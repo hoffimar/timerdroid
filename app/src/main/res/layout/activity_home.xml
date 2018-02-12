@@ -22,8 +22,7 @@
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/app_name"
-            app:logo="@drawable/timer">
+            app:title="@string/app_name">
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout

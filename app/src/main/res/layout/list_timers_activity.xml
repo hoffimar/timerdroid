@@ -17,8 +17,7 @@
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/list_timers_title"
-            app:logo="@drawable/timer" />
+            app:title="@string/list_timers_title" />
     </android.support.design.widget.AppBarLayout>
 
     <fragment

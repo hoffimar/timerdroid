@@ -8,9 +8,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/timer"
+        android:icon="@mipmap/ic_app_square"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/timer"
+        android:roundIcon="@mipmap/ic_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

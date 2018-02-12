@@ -17,8 +17,7 @@
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/menu_new_timer"
-            app:logo="@drawable/timer" />
+            app:title="@string/menu_new_timer"/>
     </android.support.design.widget.AppBarLayout>
 
     <fragment
