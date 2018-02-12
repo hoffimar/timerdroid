@@ -14,14 +14,13 @@
     <string name="menu_new_timer">New Timer</string>
     <string name="menu_new_category">New Category</string>
     <string name="feedback_chooser_title">Choose app</string>
-    <string name="menu_feedback_subject">Feedback Timerdroid Tablet</string>
+    <string name="menu_feedback_subject" translatable="false">Feedback TimerDroid</string>
     <string name="menu_feedback_address">tomatodevs@googlemail.com</string>
-    <string name="menu_share_url">https://market.android.com/details?id=com.tomatodev.timerdroid</string>
     <string name="menu_share_subject">Android Timer App</string>
     <string name="about_author_label">Author</string>
-    <string name="about_author">Martin Hoffmann</string>
+    <string name="about_author" translatable="false">Martin Hoffmann</string>
     <string name="about_version_label">Version</string>
-    <string name="about_version">2.1.3</string>
+    <string name="about_version" translatable="false">3.0.0</string>
     <string name="about_link"><a href="https://github.com/hoffimar/timerdroid">Website</a></string>
     <string name="menu_about_button_text">OK</string>
 
