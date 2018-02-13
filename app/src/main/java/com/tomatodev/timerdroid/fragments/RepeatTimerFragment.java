@@ -2,6 +2,7 @@ package com.tomatodev.timerdroid.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,16 +26,18 @@ public class RepeatTimerFragment extends DialogFragment {
 	long timerTime;
 
 	public RepeatTimerFragment() {
-		// TODO delete constructor with parameters
 	}
 	
-	public RepeatTimerFragment(LocalBinder localBinder, String timerName, long timerTime) {
-		this.localBinder = localBinder;
-		this.timerName = timerName;
-		this.timerTime = timerTime;
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		this.localBinder = (LocalBinder) getArguments().getBinder("localBinder");
+		this.timerName = getArguments().getString("timerName");
+		this.timerTime = getArguments().getLong("timerTime");
 	}
 
-    @Override
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		getDialog().setTitle(R.string.list_timers_repeat_title);
 

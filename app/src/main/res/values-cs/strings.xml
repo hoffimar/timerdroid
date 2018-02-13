@@ -92,5 +92,7 @@
 		
 	<string name="popup_timer_stop">Zastavit</string>
     <string name="cr_timer_edit_title">Změna Odpočet</string>
+    <string name="notification_channel_running_timers_title">Running timers</string>
+	<string name="notification_channel_finished_timers_title">Finished timers</string>
 
 </resources>

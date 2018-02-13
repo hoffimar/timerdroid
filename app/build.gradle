@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.tomatodev.timerdroid"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 26
         versionCode 1412300
         versionName "3.0.0"

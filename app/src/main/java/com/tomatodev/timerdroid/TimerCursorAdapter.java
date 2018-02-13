@@ -3,6 +3,7 @@ package com.tomatodev.timerdroid;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -80,8 +81,13 @@ public class TimerCursorAdapter extends CursorAdapter {
 							case R.id.popup_timer_run_repeated:
 								FragmentTransaction ft = fm.beginTransaction();
 							    ft.addToBackStack(null);
-							    RepeatTimerFragment newCategoryFragment = new RepeatTimerFragment(mLocalBinder, timerName, timerTime);
-							    newCategoryFragment.show(ft, "dialog");
+							    RepeatTimerFragment repeatTimerFragment = new RepeatTimerFragment();
+                                Bundle arguments = new Bundle();
+                                arguments.putBinder("localBinder", mLocalBinder);
+                                arguments.putString("timerName", timerName);
+                                arguments.putLong("timerTime", timerTime);
+                                repeatTimerFragment.setArguments(arguments);
+                                repeatTimerFragment.show(ft, "dialog");
 								return true;
 							default:
 								break;
