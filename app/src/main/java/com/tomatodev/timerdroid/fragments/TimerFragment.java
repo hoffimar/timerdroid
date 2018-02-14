@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -49,8 +48,9 @@ public class TimerFragment extends Fragment {
 	private LocalBinder localBinder;
 	private Spinner categorySpinner;
 	private CheckBox favoriteCheckBox;
+    private int mTimerId;
 
-	@Override
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
@@ -60,9 +60,11 @@ public class TimerFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		pickerHrs = (NumberPicker) getActivity().findViewById(R.id.timer_picker_hrs);
-		pickerMins = (NumberPicker) getActivity().findViewById(R.id.timer_picker_mins);
-		pickerSecs = (NumberPicker) getActivity().findViewById(R.id.timer_picker_secs);
+        mTimerId = getActivity().getIntent().getIntExtra("timerId", -1);
+
+		pickerHrs = getActivity().findViewById(R.id.timer_picker_hrs);
+		pickerMins = getActivity().findViewById(R.id.timer_picker_mins);
+		pickerSecs = getActivity().findViewById(R.id.timer_picker_secs);
 
 		pickerHrs.setMinValue(0);
 		pickerHrs.setMaxValue(1000);
@@ -79,13 +81,11 @@ public class TimerFragment extends Fragment {
 		pickerSecs.setValue(0);
 		pickerSecs.setOnLongPressUpdateInterval(200);
 
-		timerNameEditText = (EditText) getActivity().findViewById(R.id.timerName);
+		timerNameEditText = getActivity().findViewById(R.id.timerName);
 		
-		favoriteCheckBox = (CheckBox) getActivity().findViewById(R.id.checkBoxFavorite);
+		favoriteCheckBox = getActivity().findViewById(R.id.checkBoxFavorite);
 
-		// Start Timer
 		Intent intent = new Intent(this.getActivity(), TimerService.class);
-		// intent.putExtra("time", length);
 		ServiceConnection serviceConnection = new ServiceConnection() {
 
 			@Override
@@ -96,7 +96,6 @@ public class TimerFragment extends Fragment {
 			@Override
 			public void onServiceConnected(ComponentName name, IBinder service) {
 				localBinder = (LocalBinder) service;
-
 			}
 		};
 		boolean success = getActivity().getApplicationContext().bindService(intent, serviceConnection,
@@ -105,7 +104,7 @@ public class TimerFragment extends Fragment {
 		// // TODO: do something
 		// }
 
-		categorySpinner = (Spinner) getActivity().findViewById(R.id.spinner_category);
+		categorySpinner = getActivity().findViewById(R.id.spinner_category);
 		Cursor cursor = getCategoriesCursor();
 		getActivity().startManagingCursor(cursor);
 		String[] columns = new String[] { DbAdapter.CATEGORIES_KEY_NAME };
@@ -117,9 +116,9 @@ public class TimerFragment extends Fragment {
 		categorySpinner.setAdapter(mAdapter);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        int timerId = getActivity().getIntent().getIntExtra("timerId", -1);
-		if (timerId != -1) {
-			showTimer(timerId);
+
+		if (mTimerId != -1) {
+			showTimer(mTimerId);
             actionBar.setTitle(R.string.cr_timer_edit_title);
 		} else {
 			int categoryId = getActivity().getIntent().getIntExtra("categoryId", -1);
@@ -184,6 +183,7 @@ public class TimerFragment extends Fragment {
 		if (favoriteCheckBox.isChecked()) {
 			isFavorite = 1;
 		}
+        long category = categorySpinner.getSelectedItemId();
 
 		if (length == 0 || timerName.length() == 0) {
 			if (length == 0) {
@@ -197,47 +197,22 @@ public class TimerFragment extends Fragment {
 				toast.setGravity(Gravity.TOP, 0, 40);
 				toast.show();
 			}
-
 		} else {
-			long category = categorySpinner.getSelectedItemId();
+            ContentValues values = new ContentValues();
+            values.put(TimerTable.TIMER_KEY_NAME, timerName);
+            values.put(TimerTable.TIMER_KEY_TIME, String.valueOf(length));
+            values.put(TimerTable.TIMER_KEY_CATEGORY, (int) category);
+            values.put(TimerTable.TIMER_KEY_FAVORITE, isFavorite);
 
-			final String[] projection = new String[] { TimersProvider.TimerTable._ID,
-					TimersProvider.TimerTable.TIMER_KEY_NAME, TimersProvider.TimerTable.TIMER_KEY_TIME,
-					TimersProvider.TimerTable.TIMER_KEY_CATEGORY, TimersProvider.TimerTable.TIMER_KEY_FAVORITE, };
-			Cursor cursor = getActivity().getContentResolver().query(TimerTable.CONTENT_URI, projection,
-					TimersProvider.TimerTable.TIMER_KEY_NAME + "=" + DatabaseUtils.sqlEscapeString(timerName) + "", null, TimerTable.TIMER_KEY_ID);
-
-			// Cursor cursor =
-			// mDbHelper.fetchTimer(enterName.getText().toString());
-			cursor.moveToFirst();
-			int id = -1;
-			if (!cursor.isAfterLast()) { // TODO always updates the
-				// first timer with this
-				// name
-				id = cursor.getInt(0);
-				cursor.moveToNext();
-			}
-
-			if (id > -1) {
-
-				ContentValues values = new ContentValues();
-				values.put(TimerTable.TIMER_KEY_NAME, timerName);
-				values.put(TimerTable.TIMER_KEY_TIME, String.valueOf(length));
-				values.put(TimerTable.TIMER_KEY_CATEGORY, (int) category);
-				values.put(TimerTable.TIMER_KEY_FAVORITE, isFavorite);
+			if (mTimerId != -1) {
 				getActivity().getContentResolver().update(
-						Uri.parse(TimerTable.CONTENT_ID_URI_BASE + "/" + Integer.toString(id)), values, null, null);
+						Uri.parse(TimerTable.CONTENT_ID_URI_BASE + "/" + Integer.toString(mTimerId)), values, null, null);
 
 				Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.create_timer_timer_saved,
 						Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.TOP, 0, 40);
 				toast.show();
 			} else {
-				ContentValues values = new ContentValues();
-				values.put(TimerTable.TIMER_KEY_NAME, timerName);
-				values.put(TimerTable.TIMER_KEY_TIME, String.valueOf(length));
-				values.put(TimerTable.TIMER_KEY_CATEGORY, (int) category);
-				values.put(TimerTable.TIMER_KEY_FAVORITE, isFavorite);
 				getActivity().getContentResolver().insert(TimerTable.CONTENT_URI, values);
 
 				Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.create_timer_timer_saved,
@@ -245,13 +220,10 @@ public class TimerFragment extends Fragment {
 				toast.setGravity(Gravity.TOP, 0, 40);
 				toast.show();
 			}
-
 		}
-
 	}
 	
-	public void showTimer(int id) {
-
+	private void showTimer(int id) {
 		final String[] projection = new String[] { TimersProvider.TimerTable._ID,
 				TimersProvider.TimerTable.TIMER_KEY_NAME, TimersProvider.TimerTable.TIMER_KEY_TIME,
 				TimersProvider.TimerTable.TIMER_KEY_CATEGORY,
@@ -282,14 +254,11 @@ public class TimerFragment extends Fragment {
 
 			// Update Category
 			int catID = cursor.getInt(cursor.getColumnIndex(TimerTable.TIMER_KEY_CATEGORY));
-
 			adjustCategorySpinner(catID);
 		}
-
 	}
 
 	private void adjustCategorySpinner(int catID) {
-		// Cursor cursorAllCat = mDbHelper.fetchAllCategories();
 		Cursor cursorAllCat = getCategoriesCursor();
 
 		// loop over all categories to find the position for the current
@@ -325,5 +294,4 @@ public class TimerFragment extends Fragment {
 				null, null, CategoriesTable.CATEGORIES_KEY_NAME);
 		return cursorAllCat;
 	}
-
 }
