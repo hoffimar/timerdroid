@@ -53,7 +53,7 @@ public class CategoriesFragment extends ListFragment implements LoaderManager.Lo
 		setListAdapter(items);
 
 		ListView lv = getListView();
-		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {

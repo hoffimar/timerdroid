@@ -269,26 +269,27 @@ public class TimerFragment extends Fragment {
 
 		// loop over all categories to find the position for the current
 		// category id
-		cursorAllCat.moveToFirst();
-		int position = 1;
-		do {
-			if (cursorAllCat.getInt(0) == catID)
-				break;
+        if (cursorAllCat.getCount() > 0) {
+            cursorAllCat.moveToFirst();
+            int position = 1;
+            do {
+                if (cursorAllCat.getInt(0) == catID)
+                    break;
 
-			cursorAllCat.moveToNext();
-			position++;
-		} while (!cursorAllCat.isLast());
+                cursorAllCat.moveToNext();
+                position++;
+            } while (!cursorAllCat.isLast());
 
-		String[] columns = new String[] { CategoriesTable.CATEGORIES_KEY_NAME };
-		int[] to = new int[] { android.R.id.text1 };
+            String[] columns = new String[] { CategoriesTable.CATEGORIES_KEY_NAME };
+            int[] to = new int[] { android.R.id.text1 };
 
-		SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this.getActivity(),
-				android.R.layout.simple_spinner_item, cursorAllCat, columns, to);
+            SimpleCursorAdapter mAdapter = new SimpleCursorAdapter(this.getActivity(),
+                    android.R.layout.simple_spinner_item, cursorAllCat, columns, to);
 
-		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		categorySpinner.setAdapter(mAdapter);
-
-		categorySpinner.setSelection(position - 1);
+            mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            categorySpinner.setAdapter(mAdapter);
+		    categorySpinner.setSelection(position - 1);
+        }
 	}
 
 	private Cursor getCategoriesCursor() {
