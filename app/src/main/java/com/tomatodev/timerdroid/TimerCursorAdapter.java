@@ -24,17 +24,19 @@ import com.tomatodev.timerdroid.fragments.RunningTimersFragment;
 import com.tomatodev.timerdroid.persistence.DbAdapter;
 import com.tomatodev.timerdroid.persistence.TimersProvider.TimerTable;
 import com.tomatodev.timerdroid.service.TimerService.LocalBinder;
+import com.tomatodev.timerdroid.shortcuts.TimerShortcutManager;
 
 public class TimerCursorAdapter extends CursorAdapter {
 
 	private LocalBinder mLocalBinder;
-
+    private Context mContext;
 	private FragmentManager fm;
 	
 	public TimerCursorAdapter(Context context, Cursor c, FragmentManager fm, LocalBinder binder) {
 		super(context, c, true);
 		this.fm = fm;
 		this.mLocalBinder = binder;
+		mContext = context;
 	}
 	
 	public void setLocalBinder(LocalBinder binder) {
@@ -49,17 +51,13 @@ public class TimerCursorAdapter extends CursorAdapter {
 		
 		TextView time = (TextView) view.findViewById(R.id.listcounters_time);
 		time.setText(Utilities.formatTime(cursor.getLong(cursor.getColumnIndex(DbAdapter.TIMER_KEY_TIME))));
-		
-		
-		
+
 		TextView name = (TextView) view.findViewById(R.id.listcounters_name);
 		name.setText(cursor.getString(cursor.getColumnIndex(DbAdapter.TIMER_KEY_NAME)));
 		View.OnClickListener timerOnClickListener = new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-
-				
 				    PopupMenu popup = new PopupMenu(context, v);
 				    popup.inflate(R.menu.popup_timer);
 				    popup.show();
@@ -95,18 +93,18 @@ public class TimerCursorAdapter extends CursorAdapter {
 							return false;
 						}
 					});
-				
 			}
 		};
 		name.setOnClickListener(timerOnClickListener);
-		
-		
+
 		ImageButton startButton = (ImageButton) view.findViewById(R.id.counter_start_button);
 		startButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				mLocalBinder.getService().startTimer(timerName, timerTime);
+                TimerShortcutManager.storeAppShortcut(mContext, timerId, timerName, timerTime);
+
 				Fragment timerListFragment = fm.findFragmentById(R.id.fragment_timer_list);
 				if (timerListFragment != null) {
 					MyApplication.showRunningTimers = true;
@@ -141,9 +139,5 @@ public class TimerCursorAdapter extends CursorAdapter {
 		View v = inflater.inflate(R.layout.listcounters, parent, false);
 		bindView(v, context, cursor);
 		return v;
-
 	}
-	
-	
-	
 }

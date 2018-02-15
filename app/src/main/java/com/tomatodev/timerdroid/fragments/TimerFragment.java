@@ -36,6 +36,7 @@ import com.tomatodev.timerdroid.persistence.TimersProvider;
 import com.tomatodev.timerdroid.persistence.TimersProvider.TimerTable;
 import com.tomatodev.timerdroid.service.TimerService;
 import com.tomatodev.timerdroid.service.TimerService.LocalBinder;
+import com.tomatodev.timerdroid.shortcuts.TimerShortcutManager;
 
 public class TimerFragment extends Fragment {
 
@@ -164,11 +165,16 @@ public class TimerFragment extends Fragment {
 
 	private void startTimer() {
 		long length = Utilities.computeLength(pickerHrs.getValue(), pickerMins.getValue(), pickerSecs.getValue());
+        String timerName = timerNameEditText.getText().toString();
 		if (localBinder != null) {
-			String timerName = timerNameEditText.getText().toString();
 
 			localBinder.getService().startTimer(timerName, length);
 		}
+
+		if (mTimerId != -1) {
+		    TimerShortcutManager.storeAppShortcut(getContext(), mTimerId, timerName, length);
+        }
+
 		MyApplication.showRunningTimers = true;
 		getActivity().finish();
 		Intent i = new Intent(getActivity().getApplicationContext(), HomeActivity.class);

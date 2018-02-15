@@ -18,9 +18,10 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <service android:name=".service.TimerService" />
@@ -36,7 +37,7 @@
             android:authorities="com.tomatodev.timerdroid.persistence.WidgetProvider" />
 
         <activity android:name=".activities.ListTimersActivity" />
-        <activity android:name=".activities.TimerActivity" />
+        <activity android:name=".activities.TimerActivity" android:exported="true"/>
         <activity android:name=".widget.AppWidgetConfigure">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
