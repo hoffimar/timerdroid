@@ -350,7 +350,6 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 							tvNoRunningTimers.setVisibility(View.VISIBLE);
 						}
 					}
-
 				}
 			});
 		}
@@ -365,7 +364,7 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 	}
 
 	private void clearRunningTimers() {
-		timersTable = (TableLayout) getActivity().findViewById(R.id.main_timers_table);
+		timersTable = getActivity().findViewById(R.id.main_timers_table);
 		if (timersTable != null) {
 			timersTable.removeAllViews();
 		}
@@ -379,6 +378,10 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 	}
 
 	public void refreshRunningTimersList() {
+        if (getActivity() == null) {
+            return;
+        }
+
 		clearRunningTimers();
 		fillRunningTimersTable();
 	}
