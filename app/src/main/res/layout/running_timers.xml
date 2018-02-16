@@ -50,6 +50,6 @@
         android:id="@+id/main_list_favorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="115dp" />
+        android:layout_marginBottom="65dp" />
 
 </LinearLayout>
