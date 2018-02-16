@@ -200,7 +200,7 @@ public class CustomNotificationManager {
 
         // set alarm volume (API < 26)
         // TODO problem when 2 alarms go off after each other, will overwrite the system volume
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+        if (canSetVolume()){
             mVolumeBefore = audio.getStreamVolume(SOUND_STREAM);
             int max = audio.getStreamMaxVolume(SOUND_STREAM);
             int volume = (int) Math.round(prefs.getInt("alarm_volume", 5) * 0.1 * max);
@@ -213,11 +213,26 @@ public class CustomNotificationManager {
     }
 
     public void cancelSoundNotification(){
-        // reset alarm volume
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O ){
+        // reset alarm volume if allowed
+        if (canSetVolume()){
             mAudioManager.setStreamVolume(AudioManager.STREAM_ALARM, mVolumeBefore, 0);
             mAudioManager.setRingerMode(mRingerModeBefore);
         }
+
         mNotificationManager.cancel(NOTIFICATION_ID_FINISHED);
+    }
+
+    private boolean canSetVolume(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
+            return false;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (!mNotificationManager.isNotificationPolicyAccessGranted()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
