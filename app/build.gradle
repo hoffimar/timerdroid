@@ -6,8 +6,8 @@ android {
         applicationId "com.tomatodev.timerdroid"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 1412310
-        versionName "3.1.0"
+        versionCode 1412311
+        versionName "3.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

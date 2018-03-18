@@ -20,7 +20,7 @@
     <string name="about_author_label">Author</string>
     <string name="about_author" translatable="false">Martin Hoffmann</string>
     <string name="about_version_label">Version</string>
-    <string name="about_version" translatable="false">3.1.0</string>
+    <string name="about_version" translatable="false">3.1.1</string>
     <string name="about_link"><a href="https://github.com/hoffimar/timerdroid">Website</a></string>
     <string name="menu_about_button_text">OK</string>
 

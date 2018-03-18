@@ -356,11 +356,13 @@ public class RunningTimersFragment extends Fragment implements LoaderManager.Loa
 	}
 
 	private void fillFavorites() {
-		getLoaderManager().restartLoader(0, null, this);
-		items = new TimerCursorAdapter(this.getActivity(), null, getFragmentManager(), mLocalBinder);
+		if (this.isAdded()) {
+			getLoaderManager().restartLoader(0, null, this);
+			items = new TimerCursorAdapter(this.getActivity(), null, getFragmentManager(), mLocalBinder);
 
-		ListView lv = getActivity().findViewById(R.id.main_list_favorites);
-		lv.setAdapter(items);
+			ListView lv = getActivity().findViewById(R.id.main_list_favorites);
+			lv.setAdapter(items);
+		}
 	}
 
 	private void clearRunningTimers() {
