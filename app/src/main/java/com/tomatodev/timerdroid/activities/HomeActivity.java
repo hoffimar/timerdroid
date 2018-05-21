@@ -15,8 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.appinvite.AppInviteInvitation;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tomatodev.timerdroid.R;
 import com.tomatodev.timerdroid.fragments.AboutDialogFragment;
 import com.tomatodev.timerdroid.fragments.CategoriesFragment;
@@ -39,8 +37,6 @@ public class HomeActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +73,6 @@ public class HomeActivity extends AppCompatActivity {
                     break;
             }
         });
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     @Override
@@ -120,10 +114,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void onInviteClicked() {
-        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.menu_share))
-                .setMessage(getString(R.string.menu_share_subject))
-                .build();
-        startActivityForResult(intent, 100);
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.menu_share_subject));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.menu_share_url));
+        startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.feedback_chooser_title)));
     }
 
     /**
